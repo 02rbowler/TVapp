@@ -5,7 +5,7 @@ import styled from 'styled-components'
 
 const Main = styled.main`
   padding: 32px;
-  font-size: 28px;
+  font-size: 20px;
 `
 
 const Footer = styled.footer`
@@ -13,7 +13,7 @@ const Footer = styled.footer`
   background-color: #CECFF9;
   color: #151951;
   font-size: 24px;
-  padding: 16px 24px;
+  padding: 16px 24px 32px;
   position: absolute;
   bottom: 0;
 `
