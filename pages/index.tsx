@@ -3,9 +3,19 @@ import Head from 'next/head'
 import Image from 'next/image'
 import styled from 'styled-components'
 
-const Main = styled.div`
+const Main = styled.main`
   padding: 32px;
   font-size: 28px;
+`
+
+const Footer = styled.footer`
+  width: 100%;
+  background-color: #CECFF9;
+  color: #151951;
+  font-size: 24px;
+  padding: 16px 24px;
+  position: absolute;
+  bottom: 0;
 `
 
 const GuideRow = styled.div`
@@ -18,13 +28,13 @@ const Item = styled.div`
   width: 200px;
   margin-right: 4px;
   padding: 8px 16px;
+  margin-bottom: 4px;
 `
 
 const Channel = styled(Item)`
   background: #252657;
   width: 280px;
   margin-right: 8px;
-  margin-bottom: 4px;
 `
 
 const Scrollable = styled.div`
@@ -124,7 +134,7 @@ const Home: NextPage = () => {
         </GuideRow>
       </Main>
 
-      <footer>
+      <Footer>
         <a
           href="https://vercel.com?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
           target="_blank"
@@ -135,7 +145,7 @@ const Home: NextPage = () => {
             <Image src="/vercel.svg" alt="Vercel Logo" width={72} height={16} />
           </span>
         </a>
-      </footer>
+      </Footer>
     </div>
   )
 }
