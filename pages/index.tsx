@@ -4,7 +4,7 @@ import Image from 'next/image'
 import styled from 'styled-components'
 
 const Main = styled.main`
-  padding: 32px;
+  padding: 32px 24px;
   font-size: 20px;
 `
 
@@ -13,9 +13,21 @@ const Footer = styled.footer`
   background-color: #CECFF9;
   color: #151951;
   font-size: 24px;
-  padding: 16px 24px 32px;
+  padding: 8px 24px 24px;
   position: absolute;
   bottom: 0;
+
+  a {
+    padding: 8px 24px;
+    display: inline-block;
+    min-width: 150px;
+    text-align: center;
+
+    &.selected {
+      background: #babad4;
+      border-radius: 10px;
+    }
+  }
 `
 
 const GuideRow = styled.div`
@@ -27,7 +39,7 @@ const Item = styled.div`
   border-radius: 10px;
   width: 200px;
   margin-right: 4px;
-  padding: 12px 20px;
+  padding: 8px 16px;
   margin-bottom: 4px;
   white-space: nowrap;
   overflow: hidden;
@@ -39,6 +51,14 @@ const Channel = styled(Item)`
   width: 200px;
   flex: none;
   margin-right: 8px;
+`
+
+const Timeline = styled(GuideRow)`
+  ${Channel}, ${Item} {
+    background: transparent;
+    font-size: 18px;
+    margin-bottom: 0;
+  }
 `
 
 const Scrollable = styled.div`
@@ -56,14 +76,44 @@ const Home: NextPage = () => {
       </Head>
 
       <Main>
+        <Timeline>
+          <Channel />
+          <Scrollable>
+            <Item>Now</Item>
+            <Item>Programme</Item>
+            <Item>Programme</Item>
+            <Item>Programme</Item>
+            <Item>Programme</Item>
+          </Scrollable>
+        </Timeline>
         <GuideRow>
           <Channel>BBC One</Channel>
           <Scrollable>
-            <Item>Programme</Item>
-            <Item>Programme</Item>
-            <Item>Programme</Item>
-            <Item>Programme</Item>
-            <Item>Programme</Item>
+            <Item>Coming soon</Item>
+          </Scrollable>
+        </GuideRow>
+        <GuideRow>
+          <Channel>BBC Two</Channel>
+          <Scrollable>
+            <Item>Coming soon</Item>
+          </Scrollable>
+        </GuideRow>
+        <GuideRow>
+          <Channel>ITV</Channel>
+          <Scrollable>
+            <Item>Coming soon</Item>
+          </Scrollable>
+        </GuideRow>
+        <GuideRow>
+          <Channel>Channel 4</Channel>
+          <Scrollable>
+            <Item>Coming soon</Item>
+          </Scrollable>
+        </GuideRow>
+        <GuideRow>
+          <Channel>Channel 5</Channel>
+          <Scrollable>
+            <Item>Coming soon</Item>
           </Scrollable>
         </GuideRow>
         <GuideRow>
@@ -87,7 +137,7 @@ const Home: NextPage = () => {
           </Scrollable>
         </GuideRow>
         <GuideRow>
-          <Channel>BBC One</Channel>
+          <Channel>Sky Sports Main Event</Channel>
           <Scrollable>
             <Item>Programme</Item>
             <Item>Programme</Item>
@@ -97,7 +147,7 @@ const Home: NextPage = () => {
           </Scrollable>
         </GuideRow>
         <GuideRow>
-          <Channel>BBC One</Channel>
+          <Channel>Sky Sports Action</Channel>
           <Scrollable>
             <Item>Programme</Item>
             <Item>Programme</Item>
@@ -107,7 +157,7 @@ const Home: NextPage = () => {
           </Scrollable>
         </GuideRow>
         <GuideRow>
-          <Channel>BBC One</Channel>
+          <Channel>Sky Sports Arena</Channel>
           <Scrollable>
             <Item>Programme</Item>
             <Item>Programme</Item>
@@ -117,7 +167,19 @@ const Home: NextPage = () => {
           </Scrollable>
         </GuideRow>
         <GuideRow>
-          <Channel>BBC One</Channel>
+          <Channel>ITV 2</Channel>
+          <Scrollable>
+            <Item>Coming soon</Item>
+          </Scrollable>
+        </GuideRow>
+        <GuideRow>
+          <Channel>ITV 4</Channel>
+          <Scrollable>
+            <Item>Coming soon</Item>
+          </Scrollable>
+        </GuideRow>
+        <GuideRow>
+          <Channel>Sky Sports PL</Channel>
           <Scrollable>
             <Item>Programme</Item>
             <Item>Programme</Item>
@@ -127,7 +189,7 @@ const Home: NextPage = () => {
           </Scrollable>
         </GuideRow>
         <GuideRow>
-          <Channel>BBC One</Channel>
+          <Channel>Sky Sports Football</Channel>
           <Scrollable>
             <Item>Programme</Item>
             <Item>Programme</Item>
@@ -137,7 +199,7 @@ const Home: NextPage = () => {
           </Scrollable>
         </GuideRow>
         <GuideRow>
-          <Channel>BBC One</Channel>
+          <Channel>Sky Sports Golf</Channel>
           <Scrollable>
             <Item>Programme</Item>
             <Item>Programme</Item>
@@ -147,67 +209,7 @@ const Home: NextPage = () => {
           </Scrollable>
         </GuideRow>
         <GuideRow>
-          <Channel>Sky Sports F1</Channel>
-          <Scrollable>
-            <Item>Programme</Item>
-            <Item>Programme</Item>
-            <Item>Programme</Item>
-            <Item>Programme</Item>
-            <Item>Programme</Item>
-          </Scrollable>
-        </GuideRow>
-        <GuideRow>
-          <Channel>Sky Sports Cricket</Channel>
-          <Scrollable>
-            <Item>Programme</Item>
-            <Item>Programme</Item>
-            <Item>Programme</Item>
-            <Item>Programme</Item>
-            <Item>Programme</Item>
-          </Scrollable>
-        </GuideRow>
-        <GuideRow>
-          <Channel>BBC One</Channel>
-          <Scrollable>
-            <Item>Programme</Item>
-            <Item>Programme</Item>
-            <Item>Programme</Item>
-            <Item>Programme</Item>
-            <Item>Programme</Item>
-          </Scrollable>
-        </GuideRow>
-        <GuideRow>
-          <Channel>BBC One</Channel>
-          <Scrollable>
-            <Item>Programme</Item>
-            <Item>Programme</Item>
-            <Item>Programme</Item>
-            <Item>Programme</Item>
-            <Item>Programme</Item>
-          </Scrollable>
-        </GuideRow>
-        <GuideRow>
-          <Channel>BBC One</Channel>
-          <Scrollable>
-            <Item>Programme</Item>
-            <Item>Programme</Item>
-            <Item>Programme</Item>
-            <Item>Programme</Item>
-            <Item>Programme</Item>
-          </Scrollable>
-        </GuideRow>
-        <GuideRow>
-          <Channel>BBC One</Channel>
-          <Scrollable>
-            <Item>Programme</Item>
-            <Item>Programme</Item>
-            <Item>Programme</Item>
-            <Item>Programme</Item>
-            <Item>Programme</Item>
-          </Scrollable>
-        </GuideRow>
-        <GuideRow>
-          <Channel>BBC One</Channel>
+          <Channel>Sky Sports Mix</Channel>
           <Scrollable>
             <Item>Programme</Item>
             <Item>Programme</Item>
@@ -223,11 +225,23 @@ const Home: NextPage = () => {
           href="https://vercel.com?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
           target="_blank"
           rel="noopener noreferrer"
+          className="selected"
         >
-          Powered by{' '}
-          <span>
-            <Image src="/vercel.svg" alt="Vercel Logo" width={72} height={16} />
-          </span>
+          Guide
+        </a>
+        <a
+          href="https://vercel.com?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          Streaming
+        </a>
+        <a
+          href="https://vercel.com?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          Watchlist
         </a>
       </Footer>
     </div>
