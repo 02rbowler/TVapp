@@ -27,13 +27,17 @@ const Item = styled.div`
   border-radius: 10px;
   width: 200px;
   margin-right: 4px;
-  padding: 8px 16px;
+  padding: 12px 20px;
   margin-bottom: 4px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 `
 
 const Channel = styled(Item)`
   background: #252657;
-  width: 280px;
+  width: 200px;
+  flex: none;
   margin-right: 8px;
 `
 
@@ -52,6 +56,86 @@ const Home: NextPage = () => {
       </Head>
 
       <Main>
+        <GuideRow>
+          <Channel>BBC One</Channel>
+          <Scrollable>
+            <Item>Programme</Item>
+            <Item>Programme</Item>
+            <Item>Programme</Item>
+            <Item>Programme</Item>
+            <Item>Programme</Item>
+          </Scrollable>
+        </GuideRow>
+        <GuideRow>
+          <Channel>Sky Sports F1</Channel>
+          <Scrollable>
+            <Item>Programme</Item>
+            <Item>Programme</Item>
+            <Item>Programme</Item>
+            <Item>Programme</Item>
+            <Item>Programme</Item>
+          </Scrollable>
+        </GuideRow>
+        <GuideRow>
+          <Channel>Sky Sports Cricket</Channel>
+          <Scrollable>
+            <Item>Programme</Item>
+            <Item>Programme</Item>
+            <Item>Programme</Item>
+            <Item>Programme</Item>
+            <Item>Programme</Item>
+          </Scrollable>
+        </GuideRow>
+        <GuideRow>
+          <Channel>BBC One</Channel>
+          <Scrollable>
+            <Item>Programme</Item>
+            <Item>Programme</Item>
+            <Item>Programme</Item>
+            <Item>Programme</Item>
+            <Item>Programme</Item>
+          </Scrollable>
+        </GuideRow>
+        <GuideRow>
+          <Channel>BBC One</Channel>
+          <Scrollable>
+            <Item>Programme</Item>
+            <Item>Programme</Item>
+            <Item>Programme</Item>
+            <Item>Programme</Item>
+            <Item>Programme</Item>
+          </Scrollable>
+        </GuideRow>
+        <GuideRow>
+          <Channel>BBC One</Channel>
+          <Scrollable>
+            <Item>Programme</Item>
+            <Item>Programme</Item>
+            <Item>Programme</Item>
+            <Item>Programme</Item>
+            <Item>Programme</Item>
+          </Scrollable>
+        </GuideRow>
+        <GuideRow>
+          <Channel>BBC One</Channel>
+          <Scrollable>
+            <Item>Programme</Item>
+            <Item>Programme</Item>
+            <Item>Programme</Item>
+            <Item>Programme</Item>
+            <Item>Programme</Item>
+          </Scrollable>
+        </GuideRow>
+        <GuideRow>
+          <Channel>BBC One</Channel>
+          <Scrollable>
+            <Item>Programme</Item>
+            <Item>Programme</Item>
+            <Item>Programme</Item>
+            <Item>Programme</Item>
+            <Item>Programme</Item>
+          </Scrollable>
+        </GuideRow>
         <GuideRow>
           <Channel>BBC One</Channel>
           <Scrollable>
