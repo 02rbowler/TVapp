@@ -10,7 +10,7 @@ const Main = styled.main`
 `
 
 const ImageDiv = styled.div`
-  width: calc(16.66% - 8px);
+  width: calc(14.28% - 8px);
   flex: none;
   margin-right: 8px;
   margin-bottom: 8px;

@@ -20,9 +20,9 @@ const SpacingBlock = styled.div`
 `
 
 const Input = styled.input`
-  margin-top: 32px;
-  margin-left: 80px;
-  font-size: 24px;
+  margin-top: 28px;
+  margin-left: 70px;
+  font-size: 20px;
   border-radius: 10px;
   border: 0;
   padding: 8px 16px;
@@ -37,7 +37,7 @@ export const Search = () => {
         <Input type="text" />
       </Container>
       <IconWrapper>
-        <AiOutlineSearch size={40} />
+        <AiOutlineSearch size={30} />
       </IconWrapper>
     </>
   )
