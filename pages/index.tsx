@@ -13,28 +13,6 @@ const Main = styled.main`
   display: flex;
 `
 
-const Footer = styled.footer`
-  width: 100%;
-  background-color: #CECFF9;
-  color: #151951;
-  font-size: 20px;
-  padding: 8px 24px 24px;
-  position: absolute;
-  bottom: 0;
-
-  a {
-    padding: 8px 24px;
-    display: inline-block;
-    min-width: 150px;
-    text-align: center;
-
-    &.selected {
-      background: #babad4;
-      border-radius: 10px;
-    }
-  }
-`
-
 const GuideRow = styled.div`
   display: flex;
 `
@@ -309,31 +287,6 @@ const Home: NextPage = () => {
           </GuideRow> */}
         </ScheduleWrapper>
       </Main>
-
-      <Footer>
-        <a
-          href="https://vercel.com?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="selected"
-        >
-          Guide
-        </a>
-        <a
-          href="https://vercel.com?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Streaming
-        </a>
-        <a
-          href="https://vercel.com?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Watchlist
-        </a>
-      </Footer>
     </div>
   )
 }
