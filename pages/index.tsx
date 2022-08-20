@@ -1,11 +1,16 @@
+import moment from 'moment'
 import type { NextPage } from 'next'
 import Head from 'next/head'
 import Image from 'next/image'
+import { useEffect, useState } from 'react'
 import styled from 'styled-components'
+import { Timeline } from '../components/Timeline'
+import { getGuideData, GuideData } from './api/guide'
 
 const Main = styled.main`
   padding: 32px 24px;
   font-size: 20px;
+  display: flex;
 `
 
 const Footer = styled.footer`
@@ -34,10 +39,10 @@ const GuideRow = styled.div`
   display: flex;
 `
 
-const Item = styled.div`
+const Item = styled.div<{widthOverride?: number}>`
   background-color: rgba(48, 56, 131, 0.5);
   border-radius: 10px;
-  width: 200px;
+  width: ${props => props.widthOverride || 200}px;
   margin-right: 4px;
   padding: 8px 16px;
   margin-bottom: 4px;
@@ -53,7 +58,15 @@ const Channel = styled(Item)`
   margin-right: 8px;
 `
 
-const Timeline = styled(GuideRow)`
+const EmptyChannel = styled(Channel)`
+  height: 23.5px;
+  margin-bottom: 8px;
+  background: transparent;
+`
+
+const TimelineWrapper = styled(GuideRow)`
+  margin-bottom: 8px;
+
   ${Channel}, ${Item} {
     background: transparent;
     font-size: 18px;
@@ -61,12 +74,59 @@ const Timeline = styled(GuideRow)`
   }
 `
 
+const ChannelWrapper = styled.div`
+  ${Channel} {
+  }
+`
+
 const Scrollable = styled.div`
   display: flex;
 `
 
+const ScheduleWrapper = styled.div``
+
 
 const Home: NextPage = () => {
+  const [data, setData] = useState<GuideData[]>([]);
+  const currentTime = moment();
+
+  useEffect(() => {
+    const go = async () => {
+      console.log("TEST")
+      const fetchedData = await getGuideData()
+      setData(fetchedData)
+    }
+
+    go()
+  }, [])
+
+  const calculateItemWidth = (minutesLength: string) => {
+    const minPerPixel = 30 / 370;
+    const parsedNum = parseInt(minutesLength, 10);
+    // const pixelPerMin = 370 / 30;
+  
+    return parsedNum / minPerPixel;
+  };
+  
+  const getTimeLeft = (current: any, item: any) => {
+    const endTime = moment(item.startTime, ['h:mm a']).add(
+      item.minutesLength,
+      'minutes',
+    );
+    const duration = moment.duration(endTime.diff(current));
+    return duration.asMinutes().toString();
+  };
+
+  const hasFinished = (schedule: any) => {
+    const endTime = moment(schedule.startTime, ['h:mm a']).add(
+      schedule.minutesLength,
+      'minutes',
+    );
+    
+    return endTime < currentTime
+  }
+
+  console.log(data)
   return (
     <div>
       <Head>
@@ -76,148 +136,181 @@ const Home: NextPage = () => {
       </Head>
 
       <Main>
-        <Timeline>
-          <Channel />
-          <Scrollable>
-            <Item>Now</Item>
-            <Item>Programme</Item>
-            <Item>Programme</Item>
-            <Item>Programme</Item>
-            <Item>Programme</Item>
-          </Scrollable>
-        </Timeline>
-        <GuideRow>
-          <Channel>BBC One</Channel>
-          <Scrollable>
-            <Item>Coming soon</Item>
-          </Scrollable>
-        </GuideRow>
-        <GuideRow>
-          <Channel>BBC Two</Channel>
-          <Scrollable>
-            <Item>Coming soon</Item>
-          </Scrollable>
-        </GuideRow>
-        <GuideRow>
-          <Channel>ITV</Channel>
-          <Scrollable>
-            <Item>Coming soon</Item>
-          </Scrollable>
-        </GuideRow>
-        <GuideRow>
-          <Channel>Channel 4</Channel>
-          <Scrollable>
-            <Item>Coming soon</Item>
-          </Scrollable>
-        </GuideRow>
-        <GuideRow>
-          <Channel>Channel 5</Channel>
-          <Scrollable>
-            <Item>Coming soon</Item>
-          </Scrollable>
-        </GuideRow>
-        <GuideRow>
-          <Channel>Sky Sports F1</Channel>
-          <Scrollable>
-            <Item>Programme</Item>
-            <Item>Programme</Item>
-            <Item>Programme</Item>
-            <Item>Programme</Item>
-            <Item>Programme</Item>
-          </Scrollable>
-        </GuideRow>
-        <GuideRow>
-          <Channel>Sky Sports Cricket</Channel>
-          <Scrollable>
-            <Item>Programme</Item>
-            <Item>Programme</Item>
-            <Item>Programme</Item>
-            <Item>Programme</Item>
-            <Item>Programme</Item>
-          </Scrollable>
-        </GuideRow>
-        <GuideRow>
-          <Channel>Sky Sports Main Event</Channel>
-          <Scrollable>
-            <Item>Programme</Item>
-            <Item>Programme</Item>
-            <Item>Programme</Item>
-            <Item>Programme</Item>
-            <Item>Programme</Item>
-          </Scrollable>
-        </GuideRow>
-        <GuideRow>
-          <Channel>Sky Sports Action</Channel>
-          <Scrollable>
-            <Item>Programme</Item>
-            <Item>Programme</Item>
-            <Item>Programme</Item>
-            <Item>Programme</Item>
-            <Item>Programme</Item>
-          </Scrollable>
-        </GuideRow>
-        <GuideRow>
-          <Channel>Sky Sports Arena</Channel>
-          <Scrollable>
-            <Item>Programme</Item>
-            <Item>Programme</Item>
-            <Item>Programme</Item>
-            <Item>Programme</Item>
-            <Item>Programme</Item>
-          </Scrollable>
-        </GuideRow>
-        <GuideRow>
-          <Channel>ITV 2</Channel>
-          <Scrollable>
-            <Item>Coming soon</Item>
-          </Scrollable>
-        </GuideRow>
-        <GuideRow>
-          <Channel>ITV 4</Channel>
-          <Scrollable>
-            <Item>Coming soon</Item>
-          </Scrollable>
-        </GuideRow>
-        <GuideRow>
-          <Channel>Sky Sports PL</Channel>
-          <Scrollable>
-            <Item>Programme</Item>
-            <Item>Programme</Item>
-            <Item>Programme</Item>
-            <Item>Programme</Item>
-            <Item>Programme</Item>
-          </Scrollable>
-        </GuideRow>
-        <GuideRow>
-          <Channel>Sky Sports Football</Channel>
-          <Scrollable>
-            <Item>Programme</Item>
-            <Item>Programme</Item>
-            <Item>Programme</Item>
-            <Item>Programme</Item>
-            <Item>Programme</Item>
-          </Scrollable>
-        </GuideRow>
-        <GuideRow>
-          <Channel>Sky Sports Golf</Channel>
-          <Scrollable>
-            <Item>Programme</Item>
-            <Item>Programme</Item>
-            <Item>Programme</Item>
-            <Item>Programme</Item>
-            <Item>Programme</Item>
-          </Scrollable>
-        </GuideRow>
-        <GuideRow>
-          <Channel>Sky Sports Mix</Channel>
-          <Scrollable>
-            <Item>Programme</Item>
-            <Item>Programme</Item>
-            <Item>Programme</Item>
-            <Item>Programme</Item>
-            <Item>Programme</Item>
-          </Scrollable>
-        </GuideRow>
+        <ChannelWrapper>
+          <EmptyChannel />
+          {
+            data.map((channelData, i) => {
+              return <Channel key={i}>{channelData.channel}</Channel>
+            })
+          }
+        </ChannelWrapper>
+        <ScheduleWrapper>
+          <TimelineWrapper>
+            <Scrollable>
+              <Timeline current={currentTime} />
+            </Scrollable>
+          </TimelineWrapper>
+          {
+            data.map((channelData, i) => {
+              return (
+                <GuideRow key={i}>
+                  <Scrollable>
+                    {
+                      channelData.schedule.map((schedule, i) => {
+                        if (hasFinished(schedule)) {
+                          return null
+                        }
+
+                        return (
+                          <Item 
+                            key={i}
+                            widthOverride={
+                              i === 0
+                                ? calculateItemWidth(getTimeLeft(currentTime, schedule))
+                                : calculateItemWidth(schedule.minutesLength)
+                            }
+                          >{schedule.title}</Item>
+                        )
+                      })
+                    }
+                  </Scrollable>
+                </GuideRow>
+              )
+            })
+          }
+          {/* <GuideRow>
+            <Channel>BBC One</Channel>
+            <Scrollable>
+              <Item>Coming soon</Item>
+            </Scrollable>
+          </GuideRow>
+          <GuideRow>
+            <Channel>BBC Two</Channel>
+            <Scrollable>
+              <Item>Coming soon</Item>
+            </Scrollable>
+          </GuideRow>
+          <GuideRow>
+            <Channel>ITV</Channel>
+            <Scrollable>
+              <Item>Coming soon</Item>
+            </Scrollable>
+          </GuideRow>
+          <GuideRow>
+            <Channel>Channel 4</Channel>
+            <Scrollable>
+              <Item>Coming soon</Item>
+            </Scrollable>
+          </GuideRow>
+          <GuideRow>
+            <Channel>Channel 5</Channel>
+            <Scrollable>
+              <Item>Coming soon</Item>
+            </Scrollable>
+          </GuideRow>
+          <GuideRow>
+            <Channel>Sky Sports F1</Channel>
+            <Scrollable>
+              <Item>Programme</Item>
+              <Item>Programme</Item>
+              <Item>Programme</Item>
+              <Item>Programme</Item>
+              <Item>Programme</Item>
+            </Scrollable>
+          </GuideRow>
+          <GuideRow>
+            <Channel>Sky Sports Cricket</Channel>
+            <Scrollable>
+              <Item>Programme</Item>
+              <Item>Programme</Item>
+              <Item>Programme</Item>
+              <Item>Programme</Item>
+              <Item>Programme</Item>
+            </Scrollable>
+          </GuideRow>
+          <GuideRow>
+            <Channel>Sky Sports Main Event</Channel>
+            <Scrollable>
+              <Item>Programme</Item>
+              <Item>Programme</Item>
+              <Item>Programme</Item>
+              <Item>Programme</Item>
+              <Item>Programme</Item>
+            </Scrollable>
+          </GuideRow>
+          <GuideRow>
+            <Channel>Sky Sports Action</Channel>
+            <Scrollable>
+              <Item>Programme</Item>
+              <Item>Programme</Item>
+              <Item>Programme</Item>
+              <Item>Programme</Item>
+              <Item>Programme</Item>
+            </Scrollable>
+          </GuideRow>
+          <GuideRow>
+            <Channel>Sky Sports Arena</Channel>
+            <Scrollable>
+              <Item>Programme</Item>
+              <Item>Programme</Item>
+              <Item>Programme</Item>
+              <Item>Programme</Item>
+              <Item>Programme</Item>
+            </Scrollable>
+          </GuideRow>
+          <GuideRow>
+            <Channel>ITV 2</Channel>
+            <Scrollable>
+              <Item>Coming soon</Item>
+            </Scrollable>
+          </GuideRow>
+          <GuideRow>
+            <Channel>ITV 4</Channel>
+            <Scrollable>
+              <Item>Coming soon</Item>
+            </Scrollable>
+          </GuideRow>
+          <GuideRow>
+            <Channel>Sky Sports PL</Channel>
+            <Scrollable>
+              <Item>Programme</Item>
+              <Item>Programme</Item>
+              <Item>Programme</Item>
+              <Item>Programme</Item>
+              <Item>Programme</Item>
+            </Scrollable>
+          </GuideRow>
+          <GuideRow>
+            <Channel>Sky Sports Football</Channel>
+            <Scrollable>
+              <Item>Programme</Item>
+              <Item>Programme</Item>
+              <Item>Programme</Item>
+              <Item>Programme</Item>
+              <Item>Programme</Item>
+            </Scrollable>
+          </GuideRow>
+          <GuideRow>
+            <Channel>Sky Sports Golf</Channel>
+            <Scrollable>
+              <Item>Programme</Item>
+              <Item>Programme</Item>
+              <Item>Programme</Item>
+              <Item>Programme</Item>
+              <Item>Programme</Item>
+            </Scrollable>
+          </GuideRow>
+          <GuideRow>
+            <Channel>Sky Sports Mix</Channel>
+            <Scrollable>
+              <Item>Programme</Item>
+              <Item>Programme</Item>
+              <Item>Programme</Item>
+              <Item>Programme</Item>
+              <Item>Programme</Item>
+            </Scrollable>
+          </GuideRow> */}
+        </ScheduleWrapper>
       </Main>
 
       <Footer>
