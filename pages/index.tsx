@@ -17,7 +17,7 @@ const Footer = styled.footer`
   width: 100%;
   background-color: #CECFF9;
   color: #151951;
-  font-size: 24px;
+  font-size: 20px;
   padding: 8px 24px 24px;
   position: absolute;
   bottom: 0;
@@ -59,19 +59,14 @@ const Channel = styled(Item)`
 `
 
 const EmptyChannel = styled(Channel)`
-  height: 23.5px;
+  height: 19px;
   margin-bottom: 8px;
   background: transparent;
 `
 
 const TimelineWrapper = styled(GuideRow)`
   margin-bottom: 8px;
-
-  ${Channel}, ${Item} {
-    background: transparent;
-    font-size: 18px;
-    margin-bottom: 0;
-  }
+  font-size: 16px;
 `
 
 const ChannelWrapper = styled.div`
@@ -83,7 +78,10 @@ const Scrollable = styled.div`
   display: flex;
 `
 
-const ScheduleWrapper = styled.div``
+const ScheduleWrapper = styled.div`
+  min-width: 0;
+  overflow-x: auto;
+`
 
 
 const Home: NextPage = () => {
@@ -92,7 +90,6 @@ const Home: NextPage = () => {
 
   useEffect(() => {
     const go = async () => {
-      console.log("TEST")
       const fetchedData = await getGuideData()
       setData(fetchedData)
     }

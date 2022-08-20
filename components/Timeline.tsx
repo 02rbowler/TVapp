@@ -1,14 +1,5 @@
 import moment from 'moment';
-import styled from 'styled-components';
 import { TimelineItem } from './TimelineItem';
-
-// const Row = styled.div`
-//   display: flex;
-
-//   div {
-//     flex: none;
-//   }
-// `
 
 interface Timeline {
   current: moment.Moment
