@@ -31,7 +31,7 @@ const ImageWrapper = styled.div`
 
 const Watchlist: NextPage = () => {
   const query = useQuery('watchlist', () => fetchWatchlist())
-  console.log(query)
+  // console.log(query)
   
   return (
     <div>
@@ -44,12 +44,6 @@ const Watchlist: NextPage = () => {
       <Main>
         <Search />
         <ImageWrapper>
-          {query.data?.map(listItem => <ImageDiv key={listItem.id}>
-            <img src={`https://image.tmdb.org/t/p/w500${listItem.poster_path}`} alt="" />
-          </ImageDiv>)}
-          {query.data?.map(listItem => <ImageDiv key={listItem.id}>
-            <img src={`https://image.tmdb.org/t/p/w500${listItem.poster_path}`} alt="" />
-          </ImageDiv>)}
           {query.data?.map(listItem => <ImageDiv key={listItem.id}>
             <img src={`https://image.tmdb.org/t/p/w500${listItem.poster_path}`} alt="" />
           </ImageDiv>)}

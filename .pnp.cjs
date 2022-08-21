@@ -33,12 +33,14 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
         [null, {\
           "packageLocation": "./",\
           "packageDependencies": [\
+            ["@types/lodash.debounce", "npm:4.0.7"],\
             ["@types/node", "npm:18.7.6"],\
             ["@types/react", "npm:18.0.17"],\
             ["@types/react-dom", "npm:18.0.6"],\
             ["@types/styled-components", "npm:5.1.26"],\
             ["eslint", "npm:8.22.0"],\
             ["eslint-config-next", "virtual:bb030d9ff90a33e59975a1aa301fa5d94dcba34e0c71df16d6c255abe340ac97c227cdcfd98fd1bdf569f7a0721e2e3b1046fec31ab27a23882b8ec2db4dfbbe#npm:12.2.5"],\
+            ["lodash.debounce", "npm:4.0.8"],\
             ["moment", "npm:2.29.4"],\
             ["next", "virtual:bb030d9ff90a33e59975a1aa301fa5d94dcba34e0c71df16d6c255abe340ac97c227cdcfd98fd1bdf569f7a0721e2e3b1046fec31ab27a23882b8ec2db4dfbbe#npm:12.2.5"],\
             ["react", "npm:18.2.0"],\
@@ -575,6 +577,25 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageLocation": "./.yarn/cache/@types-json5-npm-0.0.29-f63a7916bd-e60b153664.zip/node_modules/@types/json5/",\
           "packageDependencies": [\
             ["@types/json5", "npm:0.0.29"]\
+          ],\
+          "linkType": "HARD"\
+        }]\
+      ]],\
+      ["@types/lodash", [\
+        ["npm:4.14.184", {\
+          "packageLocation": "./.yarn/cache/@types-lodash-npm-4.14.184-aec91d64ae-6d9a4d67f7.zip/node_modules/@types/lodash/",\
+          "packageDependencies": [\
+            ["@types/lodash", "npm:4.14.184"]\
+          ],\
+          "linkType": "HARD"\
+        }]\
+      ]],\
+      ["@types/lodash.debounce", [\
+        ["npm:4.0.7", {\
+          "packageLocation": "./.yarn/cache/@types-lodash.debounce-npm-4.0.7-efe92bf273-e873b2d77f.zip/node_modules/@types/lodash.debounce/",\
+          "packageDependencies": [\
+            ["@types/lodash.debounce", "npm:4.0.7"],\
+            ["@types/lodash", "npm:4.14.184"]\
           ],\
           "linkType": "HARD"\
         }]\
@@ -2426,6 +2447,15 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "linkType": "HARD"\
         }]\
       ]],\
+      ["lodash.debounce", [\
+        ["npm:4.0.8", {\
+          "packageLocation": "./.yarn/cache/lodash.debounce-npm-4.0.8-f1d6e09799-a3f527d22c.zip/node_modules/lodash.debounce/",\
+          "packageDependencies": [\
+            ["lodash.debounce", "npm:4.0.8"]\
+          ],\
+          "linkType": "HARD"\
+        }]\
+      ]],\
       ["lodash.merge", [\
         ["npm:4.6.2", {\
           "packageLocation": "./.yarn/cache/lodash.merge-npm-4.6.2-77cb4416bf-ad580b4bdb.zip/node_modules/lodash.merge/",\
@@ -3445,12 +3475,14 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageLocation": "./",\
           "packageDependencies": [\
             ["tvapp", "workspace:."],\
+            ["@types/lodash.debounce", "npm:4.0.7"],\
             ["@types/node", "npm:18.7.6"],\
             ["@types/react", "npm:18.0.17"],\
             ["@types/react-dom", "npm:18.0.6"],\
             ["@types/styled-components", "npm:5.1.26"],\
             ["eslint", "npm:8.22.0"],\
             ["eslint-config-next", "virtual:bb030d9ff90a33e59975a1aa301fa5d94dcba34e0c71df16d6c255abe340ac97c227cdcfd98fd1bdf569f7a0721e2e3b1046fec31ab27a23882b8ec2db4dfbbe#npm:12.2.5"],\
+            ["lodash.debounce", "npm:4.0.8"],\
             ["moment", "npm:2.29.4"],\
             ["next", "virtual:bb030d9ff90a33e59975a1aa301fa5d94dcba34e0c71df16d6c255abe340ac97c227cdcfd98fd1bdf569f7a0721e2e3b1046fec31ab27a23882b8ec2db4dfbbe#npm:12.2.5"],\
             ["react", "npm:18.2.0"],\
