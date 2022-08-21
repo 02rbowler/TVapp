@@ -1,3 +1,5 @@
+import moment from "moment"
+
 type Schedule = {
   minutesLength: string
   startTime: string
@@ -15,4 +17,21 @@ export const getGuideData = async (): Promise<GuideData[]> => {
   );
   const json = await response.json();
   return json;
+}
+
+export const getFreeviewGuideData = async (): Promise<GuideData[]> => {
+  const freeviewRes = await fetch(process.env.NEXT_PUBLIC_NETLIFY_ENDPOINT + '.netlify/functions/getFreeviewTV')
+  const freeviewJson = await freeviewRes.json()
+  if(!freeviewJson) {
+    return []
+  }
+
+  const toReturn: GuideData[] = []
+  Object.keys(freeviewJson).forEach(element => {
+    toReturn.push({
+      channel: freeviewJson[element].shows[0].displayName,
+      schedule: freeviewJson[element].shows
+    })
+  });
+  return toReturn;
 }

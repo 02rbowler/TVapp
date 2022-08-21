@@ -5,7 +5,7 @@ import Image from 'next/image'
 import { useEffect, useState } from 'react'
 import styled from 'styled-components'
 import { Timeline } from '../components/Timeline'
-import { getGuideData, GuideData } from './api/guide'
+import { getFreeviewGuideData, getGuideData, GuideData } from './api/guide'
 
 const Main = styled.main`
   padding: 32px 24px;
@@ -68,8 +68,9 @@ const Home: NextPage = () => {
 
   useEffect(() => {
     const go = async () => {
-      const fetchedData = await getGuideData()
-      setData(fetchedData)
+      const fetchedSkySportsData = await getGuideData()
+      const fetchedFreeviewData = await getFreeviewGuideData()
+      setData([...fetchedFreeviewData, ...fetchedSkySportsData])
     }
 
     go()
