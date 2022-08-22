@@ -7,6 +7,7 @@ interface TimelineItem {
 
 const Item = styled.div<{widthOverride?: number}>`
   width: ${props => props.widthOverride || 370}px;
+  overflow: hidden;
 `
 
 export const TimelineItem = ({

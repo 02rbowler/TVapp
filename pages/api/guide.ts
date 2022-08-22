@@ -26,6 +26,11 @@ export const getFreeviewGuideData = async (): Promise<GuideData[]> => {
     return []
   }
 
+  const starts = moment("18:00", "HH:mm");
+  const ends = moment("18:28", "HH:mm")
+  const minutesLength = ends.diff(starts, "minutes")
+  console.log(minutesLength)
+
   const toReturn: GuideData[] = []
   Object.keys(freeviewJson).forEach(element => {
     toReturn.push({
