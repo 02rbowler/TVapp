@@ -4,6 +4,7 @@ import Head from 'next/head'
 import Image from 'next/image'
 import { useEffect, useState } from 'react'
 import styled from 'styled-components'
+import { Spinner } from '../components/Spinner'
 import { getMovieDiscover, getTrending, getTVDiscover } from './api/streaming'
 
 const Main = styled.main`
@@ -26,6 +27,15 @@ const ImageDiv = styled.div`
 
 const Row = styled.div`
   display: flex;
+  margin-bottom: 16px;
+  overflow-x: auto;
+  width: calc(100% + 32px);
+  padding-right: 32px;
+`
+
+const Title = styled.div`
+  font-size: 20px;
+  margin-bottom: 8px;
 `
 
 const Streaming: NextPage = () => {
@@ -56,32 +66,47 @@ const Streaming: NextPage = () => {
       </Head>
 
       <Main>
-        <div>Trending</div>
-        <Row>
-          {trending.map(item => (
-            <ImageDiv key={item.id}>
-              <img src={`https://image.tmdb.org/t/p/w500${item.poster_path}`} alt="" />
-            </ImageDiv>
-          ))}
-        </Row>
+        {(
+          trending.length === 0 && 
+          tv.length == 0 &&
+          movies.length === 0
+        ) ? <Spinner />
+        : (
+          <>
+            {trending.length > 0 && <>
+              <Title>Trending</Title>
+              <Row>
+                {trending.map(item => (
+                  <ImageDiv key={item.id}>
+                    <img src={`https://image.tmdb.org/t/p/w500${item.poster_path}`} alt="" />
+                  </ImageDiv>
+                ))}
+              </Row>
+            </>}
 
-        <div>TV</div>
-        <Row>
-          {tv.map(item => (
-            <ImageDiv key={item.id}>
-              <img src={`https://image.tmdb.org/t/p/w500${item.poster_path}`} alt="" />
-            </ImageDiv>
-          ))}
-        </Row>
+            {tv.length > 0 && <>
+              <Title>TV</Title>
+              <Row>
+                {tv.map(item => (
+                  <ImageDiv key={item.id}>
+                    <img src={`https://image.tmdb.org/t/p/w500${item.poster_path}`} alt="" />
+                  </ImageDiv>
+                ))}
+              </Row>
+            </>}
 
-        <div>Movies</div>
-        <Row>
-          {movies.map(item => (
-            <ImageDiv key={item.id}>
-              <img src={`https://image.tmdb.org/t/p/w500${item.poster_path}`} alt="" />
-            </ImageDiv>
-          ))}
-        </Row>
+            {movies.length > 0 && <>
+              <Title>Movies</Title>
+              <Row>
+                {movies.map(item => (
+                  <ImageDiv key={item.id}>
+                    <img src={`https://image.tmdb.org/t/p/w500${item.poster_path}`} alt="" />
+                  </ImageDiv>
+                ))}
+              </Row>
+            </>}
+          </>
+        )}
       </Main>
     </div>
   )
