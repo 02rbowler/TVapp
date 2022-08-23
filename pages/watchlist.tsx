@@ -4,6 +4,7 @@ import styled from 'styled-components'
 import { fetchWatchlist } from './api/watchlist'
 import { useQuery } from 'react-query'
 import { Search } from '../components/Search'
+import { Spinner } from '../components/Spinner'
 
 const Main = styled.main`
   padding: 32px 24px;
@@ -42,12 +43,15 @@ const Watchlist: NextPage = () => {
       </Head>
 
       <Main>
-        <Search />
-        <ImageWrapper>
-          {query.data?.map(listItem => <ImageDiv key={listItem.id}>
-            <img src={`https://image.tmdb.org/t/p/w500${listItem.poster_path}`} alt="" />
-          </ImageDiv>)}
-        </ImageWrapper>
+        {query.isLoading ? <Spinner />
+        : <>
+          <Search />
+          <ImageWrapper>
+            {query.data?.map(listItem => <ImageDiv key={listItem.id}>
+              <img src={`https://image.tmdb.org/t/p/w500${listItem.poster_path}`} alt="" />
+            </ImageDiv>)}
+          </ImageWrapper>
+        </>}
       </Main>
     </div>
   )

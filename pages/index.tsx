@@ -60,6 +60,7 @@ const Scrollable = styled.div`
 const ScheduleWrapper = styled.div`
   min-width: 0;
   overflow-x: auto;
+  padding-bottom: 10px;
 `
 
 

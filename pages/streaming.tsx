@@ -4,11 +4,48 @@ import Head from 'next/head'
 import Image from 'next/image'
 import { useEffect, useState } from 'react'
 import styled from 'styled-components'
-import { Timeline } from '../components/Timeline'
-import { getGuideData, GuideData } from './api/guide'
+import { getMovieDiscover, getTrending, getTVDiscover } from './api/streaming'
 
+const Main = styled.main`
+  padding: 32px 24px;
+`
+
+const ImageDiv = styled.div`
+  width: calc(14.28% - 8px);
+  flex: none;
+  margin-right: 8px;
+  margin-bottom: 8px;
+  box-sizing: border-box;
+
+  img {
+    width: 100%;
+    overflow: hidden;
+    border-radius: 10px;
+  }
+`
+
+const Row = styled.div`
+  display: flex;
+`
 
 const Streaming: NextPage = () => {
+  const [movies, setMovies] = useState<any[]>([])
+  const [tv, setTv] = useState<any[]>([])
+  const [trending, setTrending] = useState<any[]>([])
+
+  useEffect(() => {
+    const go = async () => {
+      const movieDiscover = await getMovieDiscover()
+      const tvDiscover = await getTVDiscover()
+      const trendingContent = await getTrending()
+      console.log(movieDiscover, tvDiscover)
+      setMovies(movieDiscover.results)
+      setTv(tvDiscover.results)
+      setTrending(trendingContent.results)
+    }
+
+    go()
+  }, [])
   
   return (
     <div>
@@ -18,7 +55,34 @@ const Streaming: NextPage = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <main>Page</main>
+      <Main>
+        <div>Trending</div>
+        <Row>
+          {trending.map(item => (
+            <ImageDiv key={item.id}>
+              <img src={`https://image.tmdb.org/t/p/w500${item.poster_path}`} alt="" />
+            </ImageDiv>
+          ))}
+        </Row>
+
+        <div>TV</div>
+        <Row>
+          {tv.map(item => (
+            <ImageDiv key={item.id}>
+              <img src={`https://image.tmdb.org/t/p/w500${item.poster_path}`} alt="" />
+            </ImageDiv>
+          ))}
+        </Row>
+
+        <div>Movies</div>
+        <Row>
+          {movies.map(item => (
+            <ImageDiv key={item.id}>
+              <img src={`https://image.tmdb.org/t/p/w500${item.poster_path}`} alt="" />
+            </ImageDiv>
+          ))}
+        </Row>
+      </Main>
     </div>
   )
 }
