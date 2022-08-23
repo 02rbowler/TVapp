@@ -1,7 +1,5 @@
 import moment from 'moment'
 import type { NextPage } from 'next'
-import Head from 'next/head'
-import Image from 'next/image'
 import { useEffect, useState } from 'react'
 import styled from 'styled-components'
 import { Spinner } from '../components/Spinner'
@@ -18,7 +16,7 @@ const GuideRow = styled.div`
   display: flex;
 `
 
-const Item = styled.div<{widthOverride?: number}>`
+const Item = styled.div<{widthOverride?: number, unliked?: boolean}>`
   background-color: rgba(48, 56, 131, 0.5);
   border-radius: 10px;
   width: ${props => props.widthOverride || 200}px;
@@ -28,6 +26,7 @@ const Item = styled.div<{widthOverride?: number}>`
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  ${props => props.unliked ? "color: #6f6ca2;" : ''}
 `
 
 const Channel = styled(Item)`
@@ -158,6 +157,7 @@ const Home: NextPage = () => {
                             <Item 
                               key={i}
                               widthOverride={widthOverride}
+                              unliked={!!schedule.unliked}
                             >{widthOverride < 30 ? "" : schedule.title}</Item>
                           )
                         })

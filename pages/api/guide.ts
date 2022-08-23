@@ -4,6 +4,7 @@ type Schedule = {
   minutesLength: string
   startTime: string
   title: string
+  unliked?: boolean
 }
 
 export type GuideData = {
