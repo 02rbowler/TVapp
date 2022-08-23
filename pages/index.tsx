@@ -110,12 +110,6 @@ const Home: NextPage = () => {
 
   return (
     <div>
-      <Head>
-        <title>TV</title>
-        <meta name="description" content="TV app" />
-        <link rel="icon" href="/favicon.ico" />
-      </Head>
-
       <Main>
         {isLoading && data.length === 0 ? <Spinner />
         : !isLoading && data.length === 0 ?
