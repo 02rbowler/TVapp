@@ -15,3 +15,9 @@ export const getTrending = async () => {
   const json = await res.json()
   return json
 }
+
+export const getSimilar = async (type: "movie" | "tv", id: string) => {
+  const res = await fetch(`https://api.themoviedb.org/3/${type}/${id}/similar?api_key=${process.env.NEXT_PUBLIC_TMDB_KEY}`)
+  const json = await res.json()
+  return json
+}
