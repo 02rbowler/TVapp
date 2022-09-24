@@ -6,7 +6,7 @@ import { useEffect, useState } from 'react'
 import styled from 'styled-components'
 import { Modal } from '../components/Modal'
 import { Spinner } from '../components/Spinner'
-import { getMovieDiscover, getSimilar, getTrending, getTVDiscover } from './api/streaming'
+import { getMovieDiscover, getNetflix, getSimilar, getTrending, getTVDiscover } from './api/streaming'
 
 const Main = styled.main`
   padding: 32px 24px;
@@ -79,19 +79,24 @@ const Streaming: NextPage = () => {
   const [movies, setMovies] = useState<any[]>([])
   const [tv, setTv] = useState<any[]>([])
   const [trending, setTrending] = useState<any[]>([])
+  const [netflix, setNetflix] = useState<any[]>([])
   const [showModal, setShowModal] = useState(true);
   const [selectedItem, setSelectedItem] = useState<any>(null)
   const [similar, setSimilar] = useState<any[]>([])
 
   useEffect(() => {
     const go = async () => {
-      const movieDiscover = await getMovieDiscover()
-      const tvDiscover = await getTVDiscover()
-      const trendingContent = await getTrending()
-      console.log(movieDiscover, tvDiscover)
+      const [movieDiscover, tvDiscover, trendingContent, netflixContent] = await Promise.all([
+        getMovieDiscover(),
+        getTVDiscover(),
+        getTrending(),
+        getNetflix()
+      ])
+
       setMovies(movieDiscover.results)
       setTv(tvDiscover.results)
       setTrending(trendingContent.results)
+      setNetflix(netflixContent)
     }
 
     go()
@@ -151,6 +156,21 @@ const Streaming: NextPage = () => {
                   <ImageDiv key={item.id} onClick={() => {
                     setSelectedItem({item, type: "movie"})
                     setShowModal(true)
+                  }}>
+                    <img src={`https://image.tmdb.org/t/p/w500${item.poster_path}`} alt="" />
+                  </ImageDiv>
+                ))}
+              </Row>
+            </>}
+
+            {netflix.length > 0 && <>
+              <Title>Nextflix</Title>
+              <Row>
+                {netflix.map(item => (
+                  <ImageDiv key={item.id} onClick={() => {
+                    // setSelectedItem({item, type: "movie"})
+                    // setShowModal(true)
+                    console.log("TODO")
                   }}>
                     <img src={`https://image.tmdb.org/t/p/w500${item.poster_path}`} alt="" />
                   </ImageDiv>
