@@ -37,3 +37,9 @@ export const getNetflix = async () => {
   const movieJson = await movie.json()
   return [...tvJson.results.slice(0, 6), ...movieJson.results.slice(0, 6)]
 }
+
+export const getDetails = async (type: "movie" | "tv", id: string) => {
+  const res = await fetch(`https://api.themoviedb.org/3/${type}/${id}?api_key=${process.env.NEXT_PUBLIC_TMDB_KEY}`)
+  const json = await res.json()
+  return json
+}

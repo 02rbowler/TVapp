@@ -6,7 +6,7 @@ import { useEffect, useState } from 'react'
 import styled from 'styled-components'
 import { Modal } from '../components/Modal'
 import { Spinner } from '../components/Spinner'
-import { getMovieDiscover, getNetflix, getSimilar, getTrending, getTVDiscover } from './api/streaming'
+import { getDetails, getMovieDiscover, getNetflix, getSimilar, getTrending, getTVDiscover } from './api/streaming'
 
 const Main = styled.main`
   padding: 32px 24px;
@@ -40,8 +40,17 @@ const Title = styled.div`
 `
 
 const Backdrop = styled.img`
-  margin: -24px -32px 0;
-  width: calc(100% + 64px);
+  width: 100%;
+  max-width: 560px;
+  margin-left: auto;
+  display: block;
+  mask-image: linear-gradient(
+    270deg,
+    rgba(0,0,0) 0%,
+    rgba(0,0,0) 54%,
+    rgba(255,255,255, 0.98) 56%,
+    rgba(255,255,255, 0) 100%
+  )
 `
 
 const ShowTitle = styled.h1``
@@ -54,12 +63,17 @@ const TextContent = styled.div`
   padding-left: 32px;
   padding-right: 60px;
   height: calc(100% + 24px);
-  background: linear-gradient(90deg,#000000ab 0%,#0000007d 60%,#1c298d00 100%);
+  background: linear-gradient(90deg,#070655 0%,#0706557d 60%,#1c298d00 100%);
   max-width: 55%;
 `
 
 const BackdropRow = styled.div`
   position: relative;
+`
+
+const ImageRow = styled.div`
+  margin: -24px -32px 0;
+  width: calc(100% + 64px);
 `
 
 const ButtonStack = styled.div`
@@ -82,6 +96,7 @@ const Streaming: NextPage = () => {
   const [netflix, setNetflix] = useState<any[]>([])
   const [showModal, setShowModal] = useState(true);
   const [selectedItem, setSelectedItem] = useState<any>(null)
+  const [modalDetails, setModalDetails] = useState<any>(null)
   const [similar, setSimilar] = useState<any[]>([])
 
   useEffect(() => {
@@ -104,15 +119,21 @@ const Streaming: NextPage = () => {
 
   useEffect(() => {
     const go = async () => {
-      const returned = await getSimilar(selectedItem.type, selectedItem.item.id)
-      console.log(returned)
-      setSimilar(returned.results)
+      const [similarData, detailsData] = await Promise.all([
+        getSimilar(selectedItem.type, selectedItem.item.id),
+        getDetails("tv", selectedItem.item.id)
+      ]);
+      // console.log(similarData)
+      setSimilar(similarData.results)
+      setModalDetails(detailsData);
     }
 
     if(selectedItem) {
       go();
     }
   }, [selectedItem]);
+
+  console.log(modalDetails)
 
   return (
     <div>
@@ -187,7 +208,9 @@ const Streaming: NextPage = () => {
         }}>
           <>
             <BackdropRow>
-              <Backdrop src={`https://image.tmdb.org/t/p/w500/${selectedItem.item.backdrop_path}`} />
+              <ImageRow>
+                <Backdrop src={`https://image.tmdb.org/t/p/w500/${selectedItem.item.backdrop_path}`} />
+              </ImageRow>
               <TextContent>
                 <ShowTitle>{selectedItem.item.title || selectedItem.item.name}</ShowTitle>
                 <div>{selectedItem.item.overview}</div>

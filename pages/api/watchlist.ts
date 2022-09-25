@@ -3,6 +3,7 @@ export const fetchWatchlist = async (): Promise<any[]> => {
   .then(res => res.json())
   .then(res => {
     // setListData(res);
+    console.log(res)
     return res
   })
   .catch(err => {

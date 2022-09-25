@@ -12,8 +12,10 @@ const Background = styled.div`
 const Container = styled.div`
   background-color: #070655;
   margin-top: 8vh;
-  margin-left: 15%;
+  margin-left: auto;
+  margin-right: auto;
   width: 70%;
+  max-width: 750px;
   height: 84vh;
   padding: 24px 32px;
   border-radius: 20px;
