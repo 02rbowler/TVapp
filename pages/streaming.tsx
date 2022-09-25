@@ -3,6 +3,7 @@ import type { NextPage } from 'next'
 import Head from 'next/head'
 import Image from 'next/image'
 import { useEffect, useState } from 'react'
+import { BsPlusLg } from 'react-icons/bs'
 import styled from 'styled-components'
 import { Modal } from '../components/Modal'
 import { Spinner } from '../components/Spinner'
@@ -55,6 +56,14 @@ const Backdrop = styled.img`
 
 const ShowTitle = styled.h1``
 
+const OverviewText = styled.div`
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+`
+
 const TextContent = styled.div`
   position: absolute;
   top: -24px;
@@ -63,7 +72,6 @@ const TextContent = styled.div`
   padding-left: 32px;
   padding-right: 60px;
   height: calc(100% + 24px);
-  background: linear-gradient(90deg,#070655 0%,#0706557d 60%,#1c298d00 100%);
   max-width: 55%;
 `
 
@@ -81,12 +89,15 @@ const ButtonStack = styled.div`
 `
 
 const Button = styled.button`
-  padding: 8px 24px;
   display: inline-block;
-  min-width: 150px;
   text-align: center;
-  background: #babad4;
-  border-radius: 10px;
+  background: none;
+  border: 3px solid white;
+  color: white;
+  border-radius: 100%;
+  width: 40px;
+  height: 40px;
+  padding-top: 5px;
 `
 
 const Streaming: NextPage = () => {
@@ -213,9 +224,9 @@ const Streaming: NextPage = () => {
               </ImageRow>
               <TextContent>
                 <ShowTitle>{selectedItem.item.title || selectedItem.item.name}</ShowTitle>
-                <div>{selectedItem.item.overview}</div>
+                <OverviewText>{selectedItem.item.overview}</OverviewText>
                 <ButtonStack>
-                  <Button>Add</Button>
+                  <Button><BsPlusLg size={20} /></Button>
                 </ButtonStack>
               </TextContent>
             </BackdropRow>
