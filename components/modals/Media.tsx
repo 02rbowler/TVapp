@@ -1,4 +1,4 @@
-import { BsPlusLg } from "react-icons/bs"
+import { BsCheckLg, BsPlusLg } from "react-icons/bs"
 import styled from "styled-components"
 
 const Backdrop = styled.img`
@@ -51,14 +51,13 @@ const ButtonStack = styled.div`
 
 const Button = styled.button`
   display: inline-block;
-  text-align: center;
   background: none;
   border: 3px solid white;
   color: white;
   border-radius: 100%;
   width: 40px;
   height: 40px;
-  padding-top: 5px;
+  padding-top: 6px;
 `
 
 const Title = styled.div`
@@ -93,9 +92,10 @@ interface MediaProps {
   primaryTitle: string;
   primaryOverview?: string;
   similar: any[];
+  onWatchlist?: boolean;
 }
 
-export const Media = ({primaryImage, primaryTitle, primaryOverview, similar}: MediaProps) => {
+export const Media = ({primaryImage, primaryTitle, primaryOverview, similar, onWatchlist}: MediaProps) => {
   return <>
     <BackdropRow>
       <ImageRow>
@@ -105,7 +105,11 @@ export const Media = ({primaryImage, primaryTitle, primaryOverview, similar}: Me
         <ShowTitle>{primaryTitle}</ShowTitle>
         {primaryOverview && <OverviewText>{primaryOverview}</OverviewText>}
         <ButtonStack>
-          <Button><BsPlusLg size={20} /></Button>
+          <Button>
+            {
+              onWatchlist ? <BsCheckLg size={20} /> : <BsPlusLg size={20} />
+            }
+          </Button>
         </ButtonStack>
       </TextContent>
     </BackdropRow>

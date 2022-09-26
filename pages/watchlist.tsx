@@ -82,6 +82,7 @@ const Watchlist: NextPage = () => {
             primaryTitle={selectedItem.name} 
             primaryOverview={selectedItem.overview}
             similar={similar} 
+            onWatchlist={true}
           />
         </Modal>
       )}

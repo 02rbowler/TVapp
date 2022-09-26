@@ -101,7 +101,10 @@ const Streaming: NextPage = () => {
               <Title>Trending</Title>
               <Row>
                 {trending.map(item => (
-                  <ImageDiv key={item.id}>
+                  <ImageDiv key={item.id} onClick={() => {
+                    setSelectedItem({item, type: item.title ? "movie" : "tv"})
+                    setShowModal(true)
+                  }}>
                     <img src={`https://image.tmdb.org/t/p/w500${item.poster_path}`} alt="" />
                   </ImageDiv>
                 ))}
@@ -141,9 +144,8 @@ const Streaming: NextPage = () => {
               <Row>
                 {netflix.map(item => (
                   <ImageDiv key={item.id} onClick={() => {
-                    // setSelectedItem({item, type: "movie"})
-                    // setShowModal(true)
-                    console.log("TODO")
+                    setSelectedItem({item, type: item.title ? "movie" : "tv"})
+                    setShowModal(true)
                   }}>
                     <img src={`https://image.tmdb.org/t/p/w500${item.poster_path}`} alt="" />
                   </ImageDiv>
