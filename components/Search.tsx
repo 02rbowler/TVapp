@@ -50,7 +50,10 @@ const ResultsRow = styled.div`
 export interface Suggestion {
   id: number
   poster_path: string
+  backdrop_path: string
+  overview: string
   name: string
+  title: string
 }
 
 export const Search = () => {
@@ -61,12 +64,10 @@ export const Search = () => {
 
   const debouncedFetch = debounce(async () => { // debounce isn't working
     if(searchTerm) {
-      console.log("HERE")
       const tvSearchResponse = await search('tv', searchTerm);
       const movieSearchResponse = await search('movie', searchTerm);
 
       if(tvSearchResponse.results) {
-        console.log(tvSearchResponse.results)
         setTVSuggestions(tvSearchResponse.results.slice(0, 3).filter((item: Suggestion) => item.poster_path));
       }
       if(movieSearchResponse.results) {
@@ -93,7 +94,7 @@ export const Search = () => {
       queryClient.invalidateQueries('watchlist')
     },
   })
-
+console.log(movieSuggestions);
   const selectSuggestion = (suggestion: Suggestion, type: 'tv' | 'movie') => {
     if(type === 'tv') {
       addMutation.mutate({
@@ -102,7 +103,9 @@ export const Search = () => {
         type: "tv",
         episode: "1.0",
         name: suggestion.name,
-        poster_path: suggestion.poster_path
+        poster_path: suggestion.poster_path,
+        backdrop_path: suggestion.backdrop_path,
+        overview: suggestion.overview
       })
     } else {
       addMutation.mutate({
@@ -110,8 +113,10 @@ export const Search = () => {
         id: suggestion.id,
         type: "movie",
         episode: "1.0",
-        name: suggestion.name,
-        poster_path: suggestion.poster_path
+        name: suggestion.title,
+        poster_path: suggestion.poster_path,
+        backdrop_path: suggestion.backdrop_path,
+        overview: suggestion.overview
       })
     }
     setSearchTerm("")

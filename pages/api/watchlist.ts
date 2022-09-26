@@ -23,14 +23,18 @@ export const addToWatchlist = async ({
   type, 
   name, 
   episode,
-  poster_path
+  poster_path,
+  backdrop_path,
+  overview
 }: {
   accountNumber: number | null, 
   id: number,
   type: string,
   name: string,
   episode: string,
-  poster_path: string
+  poster_path: string,
+  backdrop_path: string,
+  overview: string
 }) => {
   return fetch(process.env.NEXT_PUBLIC_NETLIFY_ENDPOINT + '.netlify/functions/addToWatchlist', {
     method: 'POST',
@@ -40,7 +44,9 @@ export const addToWatchlist = async ({
       type,
       name,
       episode,
-      poster_path
+      poster_path,
+      backdrop_path,
+      overview
     })
   })
   // .then(res => res.json())

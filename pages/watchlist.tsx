@@ -5,6 +5,10 @@ import { fetchWatchlist } from './api/watchlist'
 import { useQuery } from 'react-query'
 import { Search } from '../components/Search'
 import { Spinner } from '../components/Spinner'
+import { Modal } from '../components/Modal'
+import { Media } from '../components/modals/Media'
+import { useEffect, useState } from 'react'
+import { getSimilar } from './api/streaming'
 
 const Main = styled.main`
   padding: 32px 24px;
@@ -31,8 +35,26 @@ const ImageWrapper = styled.div`
 `
 
 const Watchlist: NextPage = () => {
+  const [selectedItem, setSelectedItem] = useState<any>(null)
+  const [similar, setSimilar] = useState<any[]>([])
+  const [showModal, setShowModal] = useState(true);
+
   const query = useQuery('watchlist', () => fetchWatchlist())
   // console.log(query)
+
+  useEffect(() => {
+    const go = async () => {
+      const [similarData] = await Promise.all([
+        getSimilar(selectedItem.type, selectedItem.id)
+      ]);
+      // console.log(similarData)
+      setSimilar(similarData.results)
+    }
+
+    if(selectedItem) {
+      go();
+    }
+  }, [selectedItem]);
   
   return (
     <div>
@@ -41,12 +63,28 @@ const Watchlist: NextPage = () => {
         : <>
           <Search />
           <ImageWrapper>
-            {query.data?.map(listItem => <ImageDiv key={listItem.id}>
+            {query.data?.map(listItem => <ImageDiv key={listItem.id} onClick={() => {
+              setSelectedItem(listItem)
+              setShowModal(true)
+            }}>
               <img src={`https://image.tmdb.org/t/p/w500${listItem.poster_path}`} alt="" />
             </ImageDiv>)}
           </ImageWrapper>
         </>}
       </Main>
+      {showModal && selectedItem && (
+        <Modal onClose={() => {
+          setShowModal(false);
+          setSelectedItem(null);
+        }}>
+          <Media 
+            primaryImage={selectedItem.backdrop_path}
+            primaryTitle={selectedItem.name} 
+            primaryOverview={selectedItem.overview}
+            similar={similar} 
+          />
+        </Modal>
+      )}
     </div>
   )
 }
