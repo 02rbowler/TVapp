@@ -5,6 +5,7 @@ import { getDetails } from "../../pages/api/streaming"
 import { addToWatchlist, removeFromWatchlist } from "../../pages/api/watchlist"
 import { Spinner } from "../Spinner"
 import { nextEpisodeTranslation } from "./helper"
+import { useMutation, useQueryClient } from "react-query";
 
 const Backdrop = styled.img`
   width: 100%;
@@ -52,18 +53,32 @@ const ImageRow = styled.div`
 
 const ButtonStack = styled.div`
   margin-top: 16px;
+  display: flex;
+  align-items: center;
+
+  button {
+    margin-right: 16px;
+  }
 `
 
-const Button = styled.button`
+const CircleButton = styled.button`
   display: flex;
   justify-content: center;
   align-items: center;
   background: none;
-  border: 3px solid white;
+  border: 2px solid white;
   color: white;
   border-radius: 100%;
-  width: 40px;
-  height: 40px;
+  width: 30px;
+  height: 30px;
+`
+
+const Button = styled.button`
+  background: none;
+  border: 1px solid white;
+  color: white;
+  font-size: 16px;
+  border-radius: 5px;
 `
 
 const Title = styled.div`
@@ -114,6 +129,40 @@ export const Media = ({tmdbId, mediaType, similar, watchlistRef, nextEpisode}: M
     go()
   }, [])
 
+  const queryClient = useQueryClient()
+  const addMutation = useMutation(addToWatchlist, {
+    onSuccess: (data) => {
+      // Invalidate and refetch
+      queryClient.invalidateQueries('watchlist')
+      const newRef = data.response["@ref"].id
+      setRef(newRef)
+    },
+  })
+
+  const removeMutation = useMutation(removeFromWatchlist, {
+    onSuccess: () => {
+      // Invalidate and refetch
+      queryClient.invalidateQueries('watchlist')
+    },
+  })
+
+  const onClickWatchlistButton = async () => {
+    if(ref) {
+      removeMutation.mutate(ref)
+      setRef("")
+    } else {
+      addMutation.mutate({
+        accountNumber: 1, 
+        id: details.id, 
+        type: mediaType, 
+        name: details.title || details.name, 
+        poster_path: details.poster_path, 
+        backdrop_path: details.backdrop_path, 
+        overview: details.overview
+      })
+    }
+  }
+
   if(!details || !details.backdrop_path) {
     return <Spinner />
   }
@@ -128,29 +177,10 @@ console.log(details)
         {mediaType === "tv" && <b>Next episode: {nextEpisodeTranslation(nextEpisode)}</b>}
         <OverviewText>{details.overview}</OverviewText>
         <ButtonStack>
-          <Button onClick={async () => {
-            if(ref) {
-              removeFromWatchlist(ref)
-              setRef("")
-            } else {
-              const output = await addToWatchlist({
-                accountNumber: 1, 
-                id: details.id, 
-                type: mediaType, 
-                name: details.title || details.name, 
-                poster_path: details.poster_path, 
-                backdrop_path: details.backdrop_path, 
-                overview: details.overview
-              })
-
-              const newRef = output.response["@ref"].id
-              setRef(newRef)
-            }
-          }}>
-            {
-              ref ? <BsCheckLg size={20} /> : <BsPlusLg size={20} />
-            }
-          </Button>
+          <CircleButton onClick={onClickWatchlistButton}>
+            { ref ? <BsCheckLg size={15} /> : <BsPlusLg size={15} /> }
+          </CircleButton>
+          {mediaType === "tv" && <Button>Next episode</Button>}
         </ButtonStack>
       </TextContent>
     </BackdropRow>
