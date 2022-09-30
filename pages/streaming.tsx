@@ -48,7 +48,6 @@ const Streaming: NextPage = () => {
   const [netflix, setNetflix] = useState<any[]>([])
   const [showModal, setShowModal] = useState(true);
   const [selectedItem, setSelectedItem] = useState<any>(null)
-  const [modalDetails, setModalDetails] = useState<any>(null)
   const [similar, setSimilar] = useState<any[]>([])
 
   useEffect(() => {
@@ -71,21 +70,15 @@ const Streaming: NextPage = () => {
 
   useEffect(() => {
     const go = async () => {
-      const [similarData, detailsData] = await Promise.all([
-        getSimilar(selectedItem.type, selectedItem.item.id),
-        getDetails("tv", selectedItem.item.id)
-      ]);
+      const similarData = await getSimilar(selectedItem.type, selectedItem.item.id);
       // console.log(similarData)
       setSimilar(similarData.results)
-      setModalDetails(detailsData);
     }
 
     if(selectedItem) {
       go();
     }
   }, [selectedItem]);
-
-  console.log(modalDetails)
 
   return (
     <div>
@@ -161,9 +154,8 @@ const Streaming: NextPage = () => {
           setSelectedItem(null);
         }}>
           <Media 
-            primaryImage={selectedItem.item.backdrop_path} 
-            primaryTitle={selectedItem.item.title || selectedItem.item.name}
-            primaryOverview={selectedItem.item.overview}
+            tmdbId={selectedItem.item.id}
+            mediaType={selectedItem.item.title ? "movie" : "tv"}
             similar={similar} 
           />
         </Modal>

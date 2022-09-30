@@ -55,7 +55,7 @@ const Watchlist: NextPage = () => {
       go();
     }
   }, [selectedItem]);
-  
+console.log(selectedItem)
   return (
     <div>
       <Main>
@@ -78,11 +78,11 @@ const Watchlist: NextPage = () => {
           setSelectedItem(null);
         }}>
           <Media 
-            primaryImage={selectedItem.backdrop_path}
-            primaryTitle={selectedItem.name} 
-            primaryOverview={selectedItem.overview}
+            tmdbId={selectedItem.id}
+            mediaType={selectedItem.type}
             similar={similar} 
-            onWatchlist={true}
+            watchlistRef={selectedItem.ref}
+            nextEpisode={selectedItem.nextEpisode}
           />
         </Modal>
       )}

@@ -21,8 +21,7 @@ export const addToWatchlist = async ({
   accountNumber, 
   id, 
   type, 
-  name, 
-  episode,
+  name,
   poster_path,
   backdrop_path,
   overview
@@ -31,7 +30,6 @@ export const addToWatchlist = async ({
   id: number,
   type: string,
   name: string,
-  episode: string,
   poster_path: string,
   backdrop_path: string,
   overview: string
@@ -43,17 +41,32 @@ export const addToWatchlist = async ({
       id,
       type,
       name,
-      episode,
+      episode: "1.0",
       poster_path,
       backdrop_path,
       overview
     })
   })
-  // .then(res => res.json())
+  .then(res => res.json())
   .then(res => {
     // fetchReminders(account, channel, accountNumber);
+    console.log(res)
     return res
   })
+  .catch(err => {
+    console.log(err)
+    // Sentry.captureException("Reminders fetch failed: " + err);
+  });
+}
+
+export const removeFromWatchlist = async (id: string) => {
+  return fetch(process.env.NEXT_PUBLIC_NETLIFY_ENDPOINT + '.netlify/functions/removeFromWatchlist', {
+    method: 'POST',
+    body: JSON.stringify({
+      id
+    })
+  })
+  .then(res => res.json())
   .catch(err => {
     // Sentry.captureException("Reminders fetch failed: " + err);
   });

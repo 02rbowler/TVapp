@@ -1,5 +1,10 @@
+import { useEffect, useState } from "react"
 import { BsCheckLg, BsPlusLg } from "react-icons/bs"
 import styled from "styled-components"
+import { getDetails } from "../../pages/api/streaming"
+import { addToWatchlist, removeFromWatchlist } from "../../pages/api/watchlist"
+import { Spinner } from "../Spinner"
+import { nextEpisodeTranslation } from "./helper"
 
 const Backdrop = styled.img`
   width: 100%;
@@ -88,26 +93,61 @@ const Row = styled.div`
 `
 
 interface MediaProps {
-  primaryImage: string;
-  primaryTitle: string;
-  primaryOverview?: string;
+  tmdbId: string;
+  mediaType: "tv" | "movie";
   similar: any[];
-  onWatchlist?: boolean;
+  watchlistRef?: string;
+  nextEpisode?: string;
 }
 
-export const Media = ({primaryImage, primaryTitle, primaryOverview, similar, onWatchlist}: MediaProps) => {
+export const Media = ({tmdbId, mediaType, similar, watchlistRef, nextEpisode}: MediaProps) => {
+  const [ref, setRef] = useState(watchlistRef)
+  const [details, setDetails] = useState<any>(null)
+
+  useEffect(() => {
+    const go = async () => {
+      const output = await getDetails(mediaType, tmdbId)
+      setDetails(output)
+    }
+
+    go()
+  }, [])
+
+  if(!details || !details.backdrop_path) {
+    return <Spinner />
+  }
+console.log(details)
   return <>
     <BackdropRow>
       <ImageRow>
-        <Backdrop src={`https://image.tmdb.org/t/p/w500/${primaryImage}`} />
+        <Backdrop src={`https://image.tmdb.org/t/p/w500/${details.backdrop_path}`} />
       </ImageRow>
       <TextContent>
-        <ShowTitle>{primaryTitle}</ShowTitle>
-        {primaryOverview && <OverviewText>{primaryOverview}</OverviewText>}
+        <ShowTitle>{details.title || details.name}</ShowTitle>
+        {mediaType === "tv" && <b>Next episode: {nextEpisodeTranslation(nextEpisode)}</b>}
+        <OverviewText>{details.overview}</OverviewText>
         <ButtonStack>
-          <Button>
+          <Button onClick={async () => {
+            if(ref) {
+              removeFromWatchlist(ref)
+              setRef("")
+            } else {
+              const output = await addToWatchlist({
+                accountNumber: 1, 
+                id: details.id, 
+                type: mediaType, 
+                name: details.title || details.name, 
+                poster_path: details.poster_path, 
+                backdrop_path: details.backdrop_path, 
+                overview: details.overview
+              })
+
+              const newRef = output.response["@ref"].id
+              setRef(newRef)
+            }
+          }}>
             {
-              onWatchlist ? <BsCheckLg size={20} /> : <BsPlusLg size={20} />
+              ref ? <BsCheckLg size={20} /> : <BsPlusLg size={20} />
             }
           </Button>
         </ButtonStack>
