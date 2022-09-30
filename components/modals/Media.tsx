@@ -55,14 +55,15 @@ const ButtonStack = styled.div`
 `
 
 const Button = styled.button`
-  display: inline-block;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   background: none;
   border: 3px solid white;
   color: white;
   border-radius: 100%;
   width: 40px;
   height: 40px;
-  padding-top: 6px;
 `
 
 const Title = styled.div`
