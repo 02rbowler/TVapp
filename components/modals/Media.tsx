@@ -178,7 +178,7 @@ console.log(details)
         <OverviewText>{details.overview}</OverviewText>
         <ButtonStack>
           <CircleButton onClick={onClickWatchlistButton}>
-            { ref ? <BsCheckLg size={15} /> : <BsPlusLg size={15} /> }
+            { ref ? <BsCheckLg size={20} /> : <BsPlusLg size={20} /> }
           </CircleButton>
           {mediaType === "tv" && <Button>Next episode</Button>}
         </ButtonStack>
