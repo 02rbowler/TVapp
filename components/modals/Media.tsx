@@ -180,7 +180,7 @@ console.log(details)
           <CircleButton onClick={onClickWatchlistButton}>
             { ref ? <BsCheckLg size={20} /> : <BsPlusLg size={20} /> }
           </CircleButton>
-          {mediaType === "tv" && <Button>Next episode</Button>}
+          {mediaType === "tv" && ref && <Button>Next episode</Button>}
         </ButtonStack>
       </TextContent>
     </BackdropRow>

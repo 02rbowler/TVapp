@@ -4,11 +4,13 @@ import Head from 'next/head'
 import Image from 'next/image'
 import { useEffect, useState } from 'react'
 import { BsPlusLg } from 'react-icons/bs'
+import { useQuery } from 'react-query'
 import styled from 'styled-components'
 import { Modal } from '../components/Modal'
 import { Media } from '../components/modals/Media'
 import { Spinner } from '../components/Spinner'
 import { getDetails, getMovieDiscover, getNetflix, getSimilar, getTrending, getTVDiscover } from './api/streaming'
+import { fetchWatchlist } from './api/watchlist'
 
 const Main = styled.main`
   padding: 32px 24px;
@@ -50,6 +52,9 @@ const Streaming: NextPage = () => {
   const [selectedItem, setSelectedItem] = useState<any>(null)
   const [similar, setSimilar] = useState<any[]>([])
 
+  const watchlistQuery = useQuery('watchlist', () => fetchWatchlist())
+  console.log(watchlistQuery)
+
   useEffect(() => {
     const go = async () => {
       const [movieDiscover, tvDiscover, trendingContent, netflixContent] = await Promise.all([
@@ -79,6 +84,20 @@ const Streaming: NextPage = () => {
       go();
     }
   }, [selectedItem]);
+
+  const isSelectedOnWatchlist = () => {
+    if(!selectedItem) {
+      return undefined
+    }
+    const matched = watchlistQuery.data?.find(listItem => listItem.id === selectedItem.item.id)
+    if(matched) {
+      return matched
+    }
+
+    return undefined
+  }
+
+  const selectedItemMatched = isSelectedOnWatchlist()
 
   return (
     <div>
@@ -157,6 +176,8 @@ const Streaming: NextPage = () => {
             tmdbId={selectedItem.item.id}
             mediaType={selectedItem.item.title ? "movie" : "tv"}
             similar={similar} 
+            watchlistRef={selectedItemMatched?.ref}
+            nextEpisode={selectedItemMatched && selectedItemMatched.type === "tv" ? selectedItemMatched.nextEpisode : undefined}
           />
         </Modal>
       )}
