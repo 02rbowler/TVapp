@@ -53,7 +53,6 @@ const Streaming: NextPage = () => {
   const [similar, setSimilar] = useState<any[]>([])
 
   const watchlistQuery = useQuery('watchlist', () => fetchWatchlist())
-  console.log(watchlistQuery)
 
   useEffect(() => {
     const go = async () => {
@@ -176,8 +175,7 @@ const Streaming: NextPage = () => {
             tmdbId={selectedItem.item.id}
             mediaType={selectedItem.item.title ? "movie" : "tv"}
             similar={similar} 
-            watchlistRef={selectedItemMatched?.ref}
-            nextEpisode={selectedItemMatched && selectedItemMatched.type === "tv" ? selectedItemMatched.nextEpisode : undefined}
+            watchlistItem={selectedItemMatched}
           />
         </Modal>
       )}

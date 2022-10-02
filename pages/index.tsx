@@ -141,10 +141,6 @@ const Home: NextPage = () => {
                             return null
                           }
 
-                          if(schedule.title === "Pointless") {
-                            console.log("FOUND IT")
-                          }
-
                           const isFirstShow = !renderedFirstShow
                           renderedFirstShow = true
 

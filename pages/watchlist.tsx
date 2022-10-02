@@ -40,7 +40,13 @@ const Watchlist: NextPage = () => {
   const [showModal, setShowModal] = useState(true);
 
   const query = useQuery('watchlist', () => fetchWatchlist())
-  // console.log(query)
+
+  useEffect(() => {
+    if(showModal && query.data && selectedItem) {
+      const selected = query.data.find(item => selectedItem.id === item.id)
+      setSelectedItem(selected)
+    }
+  }, [query, showModal])
 
   useEffect(() => {
     const go = async () => {
@@ -55,7 +61,7 @@ const Watchlist: NextPage = () => {
       go();
     }
   }, [selectedItem]);
-console.log(selectedItem)
+
   return (
     <div>
       <Main>
@@ -81,8 +87,7 @@ console.log(selectedItem)
             tmdbId={selectedItem.id}
             mediaType={selectedItem.type}
             similar={similar} 
-            watchlistRef={selectedItem.ref}
-            nextEpisode={selectedItem.nextEpisode}
+            watchlistItem={selectedItem}
           />
         </Modal>
       )}

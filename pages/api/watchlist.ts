@@ -2,8 +2,6 @@ export const fetchWatchlist = async (): Promise<any[]> => {
   return fetch(process.env.NEXT_PUBLIC_OKTETO + '/getMyWatchlist?userId=1')
   .then(res => res.json())
   .then(res => {
-    // setListData(res);
-    console.log(res)
     return res
   })
   .catch(err => {
@@ -50,7 +48,6 @@ export const addToWatchlist = async ({
   .then(res => res.json())
   .then(res => {
     // fetchReminders(account, channel, accountNumber);
-    console.log(res)
     return res
   })
   .catch(err => {
@@ -64,6 +61,20 @@ export const removeFromWatchlist = async (id: string) => {
     method: 'POST',
     body: JSON.stringify({
       id
+    })
+  })
+  .then(res => res.json())
+  .catch(err => {
+    // Sentry.captureException("Reminders fetch failed: " + err);
+  });
+}
+
+export const goToNextEpisode = async ({currentWatchlist, nextEpisode}: {currentWatchlist: any, nextEpisode?: string}) => {
+  return fetch(process.env.NEXT_PUBLIC_NETLIFY_ENDPOINT + '.netlify/functions/updateWatchlist', {
+    method: 'POST',
+    body: JSON.stringify({
+      ...currentWatchlist,
+      episode: nextEpisode
     })
   })
   .then(res => res.json())

@@ -2,9 +2,9 @@ import { useEffect, useState } from "react"
 import { BsCheckLg, BsPlusLg } from "react-icons/bs"
 import styled from "styled-components"
 import { getDetails } from "../../pages/api/streaming"
-import { addToWatchlist, removeFromWatchlist } from "../../pages/api/watchlist"
+import { addToWatchlist, goToNextEpisode, removeFromWatchlist } from "../../pages/api/watchlist"
 import { Spinner } from "../Spinner"
-import { nextEpisodeTranslation } from "./helper"
+import { nextEpisodeToAirTranslation, nextEpisodeTranslation } from "./helper"
 import { useMutation, useQueryClient } from "react-query";
 
 const Backdrop = styled.img`
@@ -112,12 +112,11 @@ interface MediaProps {
   tmdbId: string;
   mediaType: "tv" | "movie";
   similar: any[];
-  watchlistRef?: string;
-  nextEpisode?: string;
+  watchlistItem?: any;
 }
 
-export const Media = ({tmdbId, mediaType, similar, watchlistRef, nextEpisode}: MediaProps) => {
-  const [ref, setRef] = useState(watchlistRef)
+export const Media = ({tmdbId, mediaType, similar, watchlistItem}: MediaProps) => {
+  const [ref, setRef] = useState(watchlistItem?.ref)
   const [details, setDetails] = useState<any>(null)
 
   useEffect(() => {
@@ -146,6 +145,14 @@ export const Media = ({tmdbId, mediaType, similar, watchlistRef, nextEpisode}: M
     },
   })
 
+  const updateMutation = useMutation(goToNextEpisode, {
+    onSuccess: () => {
+      queryClient.invalidateQueries('watchlist')
+      // const newRef = data.response["@ref"].id
+      // setRef(newRef)
+    }
+  })
+
   const onClickWatchlistButton = async () => {
     if(ref) {
       removeMutation.mutate(ref)
@@ -163,10 +170,18 @@ export const Media = ({tmdbId, mediaType, similar, watchlistRef, nextEpisode}: M
     }
   }
 
+  const onClickNextEpisodeButton = async () => {
+    updateMutation.mutate({
+      currentWatchlist: watchlistItem,
+      nextEpisode: watchlistItem.type === "tv" ? watchlistItem.nextEpisode : undefined
+    })
+  }
+
   if(!details || !details.backdrop_path) {
     return <Spinner />
   }
 console.log(details)
+console.log(watchlistItem)
   return <>
     <BackdropRow>
       <ImageRow>
@@ -174,13 +189,21 @@ console.log(details)
       </ImageRow>
       <TextContent>
         <ShowTitle>{details.title || details.name}</ShowTitle>
-        {mediaType === "tv" && <b>Next episode: {nextEpisodeTranslation(nextEpisode)}</b>}
+        {watchlistItem && mediaType === "tv" &&
+          watchlistItem.nextEpisode ? 
+            <b>Next episode: {nextEpisodeTranslation(watchlistItem.nextEpisode)}</b>
+          : details?.next_episode_to_air
+            ? <b>Next episode on {nextEpisodeToAirTranslation(details.next_episode_to_air)}</b>
+            : details?.status === "Returning Series" 
+              ? <b>New episodes coming soon</b>
+              : null
+        }
         <OverviewText>{details.overview}</OverviewText>
         <ButtonStack>
           <CircleButton onClick={onClickWatchlistButton}>
             { ref ? <BsCheckLg size={20} /> : <BsPlusLg size={20} /> }
           </CircleButton>
-          {mediaType === "tv" && ref && <Button>Next episode</Button>}
+          {watchlistItem && mediaType === "tv" && ref && <Button onClick={onClickNextEpisodeButton}>Next episode</Button>}
         </ButtonStack>
       </TextContent>
     </BackdropRow>
