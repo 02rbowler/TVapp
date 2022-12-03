@@ -185,7 +185,8 @@ console.log(watchlistItem)
   return <>
     <BackdropRow>
       <ImageRow>
-        <Backdrop src={`https://image.tmdb.org/t/p/w500/${details.backdrop_path}`} />
+        <Backdrop src={`https://www.themoviedb.org/t/p/w1920_and_h800_multi_faces/${details.backdrop_path}`} />
+        {/* <Backdrop src={`https://image.tmdb.org/t/p/w500/${details.backdrop_path}`} /> */}
       </ImageRow>
       <TextContent>
         <ShowTitle>{details.title || details.name}</ShowTitle>

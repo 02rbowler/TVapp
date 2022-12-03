@@ -35,11 +35,18 @@ export const getNetflix = async () => {
   ])
   const tvJson = await tv.json()
   const movieJson = await movie.json()
-  return [...tvJson.results.slice(0, 6), ...movieJson.results.slice(0, 6)]
+  return [...tvJson.results.filter((item: any) => item.poster_path).slice(0, 6), ...movieJson.results.filter((item: any) => item.poster_path).slice(0, 6)]
 }
 
 export const getDetails = async (type: "movie" | "tv", id: string) => {
   const res = await fetch(`https://api.themoviedb.org/3/${type}/${id}?api_key=${process.env.NEXT_PUBLIC_TMDB_KEY}`)
   const json = await res.json()
   return json
+}
+
+export const getStandUpComedy = async () => {
+  const dateToSearch = moment().subtract(6, 'months').format('YYYY-MM-DD');
+  const movie = await fetch(`https://api.themoviedb.org/3/discover/movie?api_key=${process.env.NEXT_PUBLIC_TMDB_KEY}&watch_region=${UK_WATCH_REGION}&with_original_language=en&sort_by=popularity.desc&with_keywords=9716&with_genres=35&air_date.gte=${dateToSearch}`);
+  const movieJson = await movie.json()
+  return [...movieJson.results.filter((item: any) => item.poster_path).slice(0, 12)]
 }

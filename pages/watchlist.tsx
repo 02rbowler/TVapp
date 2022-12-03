@@ -14,7 +14,7 @@ const Main = styled.main`
   padding: 32px 24px;
 `
 
-const ImageDiv = styled.div`
+const ImageDiv = styled.div<{hasContent: boolean}>`
   width: calc(14.28% - 8px);
   flex: none;
   margin-right: 8px;
@@ -25,6 +25,7 @@ const ImageDiv = styled.div`
     width: 100%;
     overflow: hidden;
     border-radius: 10px;
+    ${props => !props.hasContent && `opacity: 0.5;`}
   }
 `
 
@@ -70,9 +71,11 @@ const Watchlist: NextPage = () => {
           <Search />
           <ImageWrapper>
             {query.data?.map(listItem => <ImageDiv key={listItem.id} onClick={() => {
-              setSelectedItem(listItem)
-              setShowModal(true)
-            }}>
+                setSelectedItem(listItem)
+                setShowModal(true)
+              }}
+              hasContent={listItem.type === "movie" || listItem.isEpisodeAvailable}
+            >
               <img src={`https://image.tmdb.org/t/p/w500${listItem.poster_path}`} alt="" />
             </ImageDiv>)}
           </ImageWrapper>

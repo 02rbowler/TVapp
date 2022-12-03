@@ -14,11 +14,13 @@ const Container = styled.div<{displaySearch: boolean}>`
   left: 0;
   overflow: hidden;
   transition: height 0.3s ease-in-out;
+  z-index: 1;
 `
 
 const IconWrapper = styled.div`
   position: absolute;
   top: 32px;
+  z-index: 2;
 `
 
 const SpacingBlock = styled.div`

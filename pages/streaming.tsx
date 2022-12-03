@@ -9,7 +9,7 @@ import styled from 'styled-components'
 import { Modal } from '../components/Modal'
 import { Media } from '../components/modals/Media'
 import { Spinner } from '../components/Spinner'
-import { getDetails, getMovieDiscover, getNetflix, getSimilar, getTrending, getTVDiscover } from './api/streaming'
+import { getDetails, getMovieDiscover, getNetflix, getSimilar, getStandUpComedy, getTrending, getTVDiscover } from './api/streaming'
 import { fetchWatchlist } from './api/watchlist'
 
 const Main = styled.main`
@@ -48,6 +48,7 @@ const Streaming: NextPage = () => {
   const [tv, setTv] = useState<any[]>([])
   const [trending, setTrending] = useState<any[]>([])
   const [netflix, setNetflix] = useState<any[]>([])
+  const [comedy, setComedy] = useState<any[]>([])
   const [showModal, setShowModal] = useState(true);
   const [selectedItem, setSelectedItem] = useState<any>(null)
   const [similar, setSimilar] = useState<any[]>([])
@@ -56,17 +57,19 @@ const Streaming: NextPage = () => {
 
   useEffect(() => {
     const go = async () => {
-      const [movieDiscover, tvDiscover, trendingContent, netflixContent] = await Promise.all([
+      const [movieDiscover, tvDiscover, trendingContent, netflixContent, comedyContent] = await Promise.all([
         getMovieDiscover(),
         getTVDiscover(),
         getTrending(),
-        getNetflix()
+        getNetflix(),
+        getStandUpComedy()
       ])
 
-      setMovies(movieDiscover.results)
-      setTv(tvDiscover.results)
-      setTrending(trendingContent.results)
+      setMovies(movieDiscover.results.filter((item: any) => item.poster_path))
+      setTv(tvDiscover.results.filter((item: any) => item.poster_path))
+      setTrending(trendingContent.results.filter((item: any) => item.poster_path))
       setNetflix(netflixContent)
+      setComedy(comedyContent)
     }
 
     go()
@@ -76,7 +79,7 @@ const Streaming: NextPage = () => {
     const go = async () => {
       const similarData = await getSimilar(selectedItem.type, selectedItem.item.id);
       // console.log(similarData)
-      setSimilar(similarData.results)
+      setSimilar(similarData.results.filter((item: any) => item.poster_path))
     }
 
     if(selectedItem) {
@@ -156,6 +159,20 @@ const Streaming: NextPage = () => {
                 {netflix.map(item => (
                   <ImageDiv key={item.id} onClick={() => {
                     setSelectedItem({item, type: item.title ? "movie" : "tv"})
+                    setShowModal(true)
+                  }}>
+                    <img src={`https://image.tmdb.org/t/p/w500${item.poster_path}`} alt="" />
+                  </ImageDiv>
+                ))}
+              </Row>
+            </>}
+
+            {comedy.length > 0 && <>
+              <Title>Stand up comedy</Title>
+              <Row>
+                {comedy.map(item => (
+                  <ImageDiv key={item.id} onClick={() => {
+                    setSelectedItem({item, type: "movie"})
                     setShowModal(true)
                   }}>
                     <img src={`https://image.tmdb.org/t/p/w500${item.poster_path}`} alt="" />
