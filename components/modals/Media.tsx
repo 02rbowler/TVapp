@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react"
-import { BsCheckLg, BsPlusLg } from "react-icons/bs"
+import { AiOutlinePlus, AiOutlineCheck } from "react-icons/ai"
 import styled from "styled-components"
 import { getDetails } from "../../pages/api/streaming"
 import { addToWatchlist, goToNextEpisode, removeFromWatchlist } from "../../pages/api/watchlist"
@@ -202,7 +202,7 @@ console.log(watchlistItem)
         <OverviewText>{details.overview}</OverviewText>
         <ButtonStack>
           <CircleButton onClick={onClickWatchlistButton}>
-            { ref ? <BsCheckLg size={20} /> : <BsPlusLg size={20} /> }
+            { ref ? <AiOutlineCheck size={20} /> : <AiOutlinePlus size={20} /> }
           </CircleButton>
           {watchlistItem && mediaType === "tv" && ref && <Button onClick={onClickNextEpisodeButton}>Next episode</Button>}
         </ButtonStack>
