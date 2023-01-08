@@ -182,6 +182,15 @@ export const Media = ({tmdbId, mediaType, similar, watchlistItem}: MediaProps) =
   }
 console.log(details)
 console.log(watchlistItem)
+
+  const hasNextEpisodeAiredYet = () => {
+    if(details.next_episode_to_air) {
+      const nextEp = details.next_episode_to_air
+      return `${nextEp.season_number}.${nextEp.episode_number}` !== watchlistItem.nextEpisode
+    }
+    return true
+  }  
+
   return <>
     <BackdropRow>
       <ImageRow>
@@ -191,7 +200,7 @@ console.log(watchlistItem)
       <TextContent>
         <ShowTitle>{details.title || details.name}</ShowTitle>
         {watchlistItem && mediaType === "tv" &&
-          watchlistItem.nextEpisode ? 
+          watchlistItem.nextEpisode && hasNextEpisodeAiredYet() ? 
             <b>Next episode: {nextEpisodeTranslation(watchlistItem.nextEpisode)}</b>
           : details?.next_episode_to_air
             ? <b>Next episode on {nextEpisodeToAirTranslation(details.next_episode_to_air)}</b>

@@ -13,11 +13,19 @@ export type GuideData = {
 }
 
 export const getGuideData = async (): Promise<GuideData[]> => {
-  const response = await fetch(
-    `${process.env.NEXT_PUBLIC_HEROKU_BACKEND}/getGuideFromDB`,
-  );
-  const json = await response.json();
-  return json;
+  try {
+    const response = await fetch(
+      `${process.env.NEXT_PUBLIC_NETLIFY_ENDPOINT}.netlify/functions/getGuideFromDB`,
+    );
+    const json = await response.json();
+    return json;
+  } catch {
+    const response = await fetch(
+      `${process.env.NEXT_PUBLIC_HEROKU_BACKEND}/getGuideFromDB`,
+    );
+    const json = await response.json();
+    return json;
+  }
 }
 
 // export const getFreeviewGuideData = async (): Promise<GuideData[]> => {
