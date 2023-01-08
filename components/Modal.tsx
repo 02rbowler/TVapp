@@ -17,9 +17,10 @@ const Container = styled.div`
   width: 70%;
   max-width: 750px;
   height: 84vh;
-  padding: 24px 32px;
+  padding: 0 32px;
   border-radius: 20px;
   overflow: hidden;
+  position: relative;
 `
 
 export const Modal = ({children, onClose}: {children: JSX.Element, onClose: () => void}) => {

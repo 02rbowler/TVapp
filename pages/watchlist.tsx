@@ -70,14 +70,17 @@ const Watchlist: NextPage = () => {
         : <>
           <Search />
           <ImageWrapper>
-            {query.data?.map(listItem => <ImageDiv key={listItem.id} onClick={() => {
-                setSelectedItem(listItem)
-                setShowModal(true)
-              }}
-              hasContent={listItem.type === "movie" || listItem.isEpisodeAvailable}
-            >
-              <img src={`https://image.tmdb.org/t/p/w500${listItem.poster_path}`} alt="" />
-            </ImageDiv>)}
+            {query.data
+              ?.sort((a, b) => a.ts > b.ts ? -1 : 1)
+              .map(listItem => <ImageDiv key={listItem.id} onClick={() => {
+                  setSelectedItem(listItem)
+                  setShowModal(true)
+                }}
+                hasContent={listItem.type === "movie" || listItem.isEpisodeAvailable}
+              >
+                <img src={`https://image.tmdb.org/t/p/w500${listItem.poster_path}`} alt="" />
+              </ImageDiv>
+            )}
           </ImageWrapper>
         </>}
       </Main>

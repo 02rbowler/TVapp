@@ -32,23 +32,21 @@ const OverviewText = styled.div`
 `
 
 const TextContent = styled.div`
-  position: absolute;
-  top: -24px;
-  left: -32px;
-  padding-top: 24px;
-  padding-left: 32px;
   padding-right: 60px;
+  margin-bottom: 16px;
   height: calc(100% + 24px);
   max-width: 55%;
 `
 
 const BackdropRow = styled.div`
-  position: relative;
 `
 
 const ImageRow = styled.div`
-  margin: -24px -32px 0;
-  width: calc(100% + 64px);
+  position: absolute;
+  top: 0;
+  min-width: 100%;
+  left: 0;
+  height: inherit;
 `
 
 const ButtonStack = styled.div`
