@@ -108,6 +108,7 @@ const ImageDiv = styled.div`
 `
 
 const Row = styled.div`
+  position: relative;
   display: flex;
   margin-bottom: 16px;
   overflow-x: auto;
