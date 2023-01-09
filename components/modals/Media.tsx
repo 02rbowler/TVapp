@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react"
-import { AiOutlinePlus, AiOutlineCheck } from "react-icons/ai"
 import styled from "styled-components"
 import { getDetails } from "../../pages/api/streaming"
 import { addToWatchlist, goToNextEpisode, removeFromWatchlist } from "../../pages/api/watchlist"
@@ -9,16 +8,23 @@ import { useMutation, useQueryClient } from "react-query";
 
 const Backdrop = styled.img`
   width: 100%;
-  max-width: 560px;
   margin-left: auto;
   display: block;
   mask-image: linear-gradient(
     270deg,
     rgba(0,0,0) 0%,
-    rgba(0,0,0) 54%,
-    rgba(255,255,255, 0.98) 56%,
-    rgba(255,255,255, 0) 100%
+    rgba(0,0,0) 44%,
+    rgba(255,255,255, 0.98) 46%,
+    rgba(255,255,255, 0) 90%
   )
+`
+
+const BackdropBottomFade = styled.div`
+  background: linear-gradient(0deg, #070555, #07055500);
+  height: 50px;
+  position: absolute;
+  width: 100%;
+  bottom: 0;
 `
 
 const ShowTitle = styled.h1``
@@ -32,10 +38,12 @@ const OverviewText = styled.div`
 `
 
 const TextContent = styled.div`
+  position: relative;
   padding-right: 60px;
   margin-bottom: 16px;
   height: calc(100% + 24px);
   max-width: 55%;
+  min-height: 250px;
 `
 
 const BackdropRow = styled.div`
@@ -59,24 +67,25 @@ const ButtonStack = styled.div`
   }
 `
 
-const CircleButton = styled.button`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background: none;
-  border: 2px solid white;
-  color: white;
-  border-radius: 100%;
-  width: 30px;
-  height: 30px;
-`
-
 const Button = styled.button`
-  background: none;
+  background: #6b759a;
   border: 1px solid white;
   color: white;
   font-size: 16px;
   border-radius: 5px;
+  padding: 5px;
+  min-width: 110px;
+
+  &:disabled {
+    opacity: 0.7;
+  }
+`
+
+const ClearButton = styled(Button)<{selected: boolean}>`
+  background: none;
+  border: 0;
+  text-align: left;
+  ${props => props.selected ? "font-weight: bold;" : ''}
 `
 
 const Title = styled.div`
@@ -116,6 +125,8 @@ interface MediaProps {
 export const Media = ({tmdbId, mediaType, similar, watchlistItem}: MediaProps) => {
   const [ref, setRef] = useState(watchlistItem?.ref)
   const [details, setDetails] = useState<any>(null)
+  const [mutating, setMutating] = useState(false)
+  const [selectedSeason, setSelectedSeason] = useState(0)
 
   useEffect(() => {
     const go = async () => {
@@ -146,8 +157,12 @@ export const Media = ({tmdbId, mediaType, similar, watchlistItem}: MediaProps) =
   const updateMutation = useMutation(goToNextEpisode, {
     onSuccess: () => {
       queryClient.invalidateQueries('watchlist')
+      setMutating(false)
       // const newRef = data.response["@ref"].id
       // setRef(newRef)
+    },
+    onError: () => {
+      setMutating(false)
     }
   })
 
@@ -169,9 +184,18 @@ export const Media = ({tmdbId, mediaType, similar, watchlistItem}: MediaProps) =
   }
 
   const onClickNextEpisodeButton = async () => {
+    setMutating(true)
     updateMutation.mutate({
       currentWatchlist: watchlistItem,
       nextEpisode: watchlistItem.type === "tv" ? watchlistItem.nextEpisode : undefined
+    })
+  }
+
+  const onClickEpisodeButton = async (newValue: string) => {
+    setMutating(true)
+    updateMutation.mutate({
+      currentWatchlist: watchlistItem,
+      nextEpisode: newValue
     })
   }
 
@@ -185,36 +209,76 @@ console.log(watchlistItem)
     if(details.next_episode_to_air) {
       const nextEp = details.next_episode_to_air
       return `${nextEp.season_number}.${nextEp.episode_number}` !== watchlistItem.nextEpisode
+    } else {
+      const lastEpAired = details.last_episode_to_air;
+      const watchlistEpisode = watchlistItem.nextEpisode.split('.');
+
+      if(lastEpAired.season_number > parseInt(watchlistEpisode[0], 10)) {
+        return true;
+      } else {
+        if(lastEpAired.season_number === parseInt(watchlistEpisode[0], 10)) {
+          return lastEpAired.episode_number >= parseInt(watchlistEpisode[1], 10)
+        } else {
+          return false
+        }
+      }
     }
-    return true
-  }  
+  }
+
+  const displayedSeasons = mediaType === "tv" ?
+    details.seasons.filter((seasonData: any) => seasonData.name.toLowerCase() !== 'specials')
+    : []
 
   return <>
     <BackdropRow>
       <ImageRow>
         <Backdrop src={`https://www.themoviedb.org/t/p/w1920_and_h800_multi_faces/${details.backdrop_path}`} />
         {/* <Backdrop src={`https://image.tmdb.org/t/p/w500/${details.backdrop_path}`} /> */}
+        <BackdropBottomFade />
       </ImageRow>
       <TextContent>
         <ShowTitle>{details.title || details.name}</ShowTitle>
-        {watchlistItem && mediaType === "tv" &&
-          watchlistItem.nextEpisode && hasNextEpisodeAiredYet() ? 
-            <b>Next episode: {nextEpisodeTranslation(watchlistItem.nextEpisode)}</b>
-          : details?.next_episode_to_air
-            ? <b>Next episode on {nextEpisodeToAirTranslation(details.next_episode_to_air)}</b>
-            : details?.status === "Returning Series" 
-              ? <b>New episodes coming soon</b>
-              : null
+        {watchlistItem ? 
+          mediaType === "tv" &&
+            watchlistItem.nextEpisode && hasNextEpisodeAiredYet() ? 
+              <b>Next episode: {nextEpisodeTranslation(watchlistItem.nextEpisode)}</b>
+            : details?.next_episode_to_air
+              ? <b>Next episode on {nextEpisodeToAirTranslation(details.next_episode_to_air)}</b>
+              : details?.status === "Returning Series" 
+                ? <b>New episodes coming soon</b>
+                : null
+          : null
         }
         <OverviewText>{details.overview}</OverviewText>
         <ButtonStack>
-          <CircleButton onClick={onClickWatchlistButton}>
-            { ref ? <AiOutlineCheck size={20} /> : <AiOutlinePlus size={20} /> }
-          </CircleButton>
-          {watchlistItem && mediaType === "tv" && ref && <Button onClick={onClickNextEpisodeButton}>Next episode</Button>}
+          <Button onClick={onClickWatchlistButton}>
+            { ref ? "Remove" : "Add" }
+          </Button>
+          {watchlistItem && mediaType === "tv" && ref && <Button disabled={mutating} onClick={onClickNextEpisodeButton}>Next episode</Button>}
         </ButtonStack>
       </TextContent>
     </BackdropRow>
+    {mediaType === 'tv' &&
+      <>
+        <Row>
+          {displayedSeasons.map((data: any, i: number) => (
+            <ClearButton selected={i === selectedSeason} onClick={() => setSelectedSeason(i)} key={i}>{data.name}</ClearButton>
+          ))}
+        </Row>
+        <Row>
+          {[...Array(displayedSeasons[selectedSeason].episode_count)].map((_: any, i: number) => (
+            <Button 
+              disabled={!ref}
+              onClick={() => onClickEpisodeButton(`${selectedSeason + 1}.${i}`)} 
+              style={{marginRight: "16px"}} 
+              key={i}
+            >
+              Episode {i + 1}
+            </Button>
+          ))}
+        </Row>
+      </>
+    }
     {similar && 
       <>
         <Title>Similar</Title>
