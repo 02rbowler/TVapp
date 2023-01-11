@@ -91,6 +91,7 @@ const ClearButton = styled(Button)<{selected: boolean}>`
 const Title = styled.div`
   font-size: 20px;
   margin-bottom: 8px;
+  position: relative;
 `
 
 const ImageDiv = styled.div`
